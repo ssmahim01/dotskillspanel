@@ -1,33 +1,39 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
+import { ApiError } from "@/lib/axios";
 import { authService } from "@/services/auth.service";
-import { userService } from "@/services/user.service";
-
 import { useAuthStore } from "@/stores";
-
-import { queryKeys } from "@/lib/query-keys";
-
 import type { LoginPayload } from "@/types";
 
-export const useLogin = () => {
-  const queryClient = useQueryClient();
+const DEFAULT_REDIRECT_PATH = "/dashboard";
 
-  const initialize = useAuthStore((state) => state.initialize);
+export function useLogin() {
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   return useMutation({
-    mutationFn: (payload: LoginPayload) =>
-      authService.login(payload),
+    mutationFn: (payload: LoginPayload) => authService.login(payload),
 
-    onSuccess: async () => {
-      const user = await userService.me();
+    onSuccess: (response) => {
+      setUser(response.data.user);
 
-      initialize(user);
+      toast.success(response.message || "Welcome back.");
 
-      await queryClient.invalidateQueries({
-        queryKey: queryKeys.auth.me,
-      });
+      router.replace(DEFAULT_REDIRECT_PATH);
+      router.refresh();
+    },
+
+    onError: (error) => {
+      const message =
+        error instanceof ApiError
+          ? error.message
+          : "Unable to sign in. Please try again.";
+
+      toast.error(message);
     },
   });
-};
+}

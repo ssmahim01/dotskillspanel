@@ -4,6 +4,7 @@ import type {
   ChangePasswordPayload,
   LoginPayload,
   LoginResponse,
+  ForgotPasswordPayload
 } from "@/types";
 
 class AuthService {
@@ -40,6 +41,13 @@ class AuthService {
         userId,
         newPassword,
       },
+    );
+  }
+  
+  forgotPassword(payload: ForgotPasswordPayload) {
+    return apiClient.post<ApiResponse<null>>(
+      "/auth/forgot-password",
+      payload,
     );
   }
 }

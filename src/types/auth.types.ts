@@ -18,3 +18,7 @@ export interface AdminChangePasswordPayload {
   userId: string;
   newPassword: string;
 }
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
