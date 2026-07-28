@@ -9,13 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 import { formatRole } from "@/lib/dashboard-utils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function UserMenu() {
-  const { data, isLoading } = useUserInfoQuery(undefined);
-  const user = data?.data;
+  const { data: user, isLoading } = useCurrentUser();
 
   if (isLoading || !user) {
     return (

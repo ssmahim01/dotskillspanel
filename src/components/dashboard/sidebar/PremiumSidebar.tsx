@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 import {
   Sidebar,
   SidebarContent,
@@ -23,7 +23,7 @@ import React from "react";
 interface PremiumSidebarProps extends React.ComponentProps<typeof Sidebar> {}
 
 export function PremiumSidebar(props: PremiumSidebarProps) {
-  const { data, isLoading, isError } = useUserInfoQuery(undefined);
+  const { data: user, isLoading } = useCurrentUser();
   const { isMobile, setOpenMobile } = useSidebar();
 
   const handleLinkClick = () => {
@@ -52,7 +52,7 @@ export function PremiumSidebar(props: PremiumSidebarProps) {
     );
   }
 
-  if (isError || !data?.data?.role) {
+  if (!user?.role) {
     return (
       <Sidebar {...props}>
         <SidebarHeader>
@@ -64,7 +64,7 @@ export function PremiumSidebar(props: PremiumSidebarProps) {
     );
   }
 
-  const userRole = (data?.data?.role as UserRole) || "STAFF";
+  const userRole = (user.role as UserRole) || "STAFF";
   const navGroups = navigationConfig[userRole] || navigationConfig.STAFF;
 
   return (

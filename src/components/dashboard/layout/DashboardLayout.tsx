@@ -4,7 +4,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { PremiumSidebar } from "../sidebar/PremiumSidebar";
 import { DashboardHeader } from "../header/DashboardHeader";
 import DashboardSkeleton from "../DashboardSkeleton";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ interface DashboardLayoutProps {
  * - Dark/light mode support
  */
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { isLoading } = useUserInfoQuery(undefined);
+  const { isLoading } = useCurrentUser();
 
   if (isLoading) {
     return <DashboardSkeleton />;
