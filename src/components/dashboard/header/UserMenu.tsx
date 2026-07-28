@@ -22,7 +22,7 @@ export function UserMenu() {
     );
   }
 
-  const userName = user.username || user.email || "User";
+  const userName = user.fullName || user.email || "User";
   const userRole = formatRole(user.role || "STAFF");
   const initials = userName
     .split(" ")

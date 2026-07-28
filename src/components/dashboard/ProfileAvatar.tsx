@@ -3,15 +3,17 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser"
 import { User } from "lucide-react";
 
 export function ProfileAvatar() {
-  const {data} = useUserInfoQuery();
+  const {data: user} = useCurrentUser();
+  const avatarSrc = user?.avatar || "https://github.com/shadcn.png";
+  
   return (
     <div className="flex flex-row flex-wrap items-center gap-12">
       <Avatar>
-        <AvatarImage className="object-cover" src={data?.data.email? data?.data.picture :`https://github.com/shadcn.png`} alt="@shadcn" />
+        <AvatarImage className="object-cover" src={avatarSrc} alt={user?.fullName || "User"} />
         <AvatarFallback><User/></AvatarFallback>
       </Avatar>
     </div>

@@ -139,7 +139,7 @@ export function DashboardOverview() {
     );
   }
 
-  const userName = user?.username || user?.email || "User";
+  const userName = user?.fullName || user?.email || "User";
   const userGreeting = `Welcome back, ${userName}! 👋`;
 
   return (

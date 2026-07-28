@@ -16,7 +16,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import type { UserRole } from "@/lib/permissions";
@@ -25,7 +25,7 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
-  const { data, isLoading, isError } = useUserInfoQuery(undefined);
+  const { data: user, isLoading, isError } = useCurrentUser();
 
   const { isMobile, setOpenMobile } = useSidebar();
 
@@ -43,7 +43,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     );
   }
 
-  if (isError || !data?.data?.role) {
+  if (isError || !user?.role) {
     return (
       <div className="flex items-center justify-center h-full text-red-500 text-sm">
         Failed to load user info
@@ -51,8 +51,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     );
   }
 
-  const userRole = (data?.data?.role as UserRole) || "MODERATOR";
-  const customPermissions = (data?.data?.permissions as any[]) || undefined;
+  const userRole = (user.role as UserRole) || "MODERATOR";
+  const customPermissions = (user.permissions as any[]) || undefined;
 
   const sidebarItems = buildSidebarItems(userRole, customPermissions);
 

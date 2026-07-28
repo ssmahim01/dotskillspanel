@@ -13,20 +13,20 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { LogOut, User, User2 } from "lucide-react"
-import { useGetMeQuery } from "@/redux/features/user/user.api"
+import { LogOut, User as UserIcon, User2 } from "lucide-react"
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser"
 import { ProfileAvatar } from "./ProfileAvatar"
 import React from "react";
-import { IUser } from "@/types";
+import type { User } from "@/types";
 import UserDetailsModal from "@/components/dashboard/user/UserDetailsModal";
 import { useUser } from "@/context/UserContext"
 
 export function ProfileDropdown() {
-  const [selectedUser, setSelectedUser] = React.useState<IUser | null>(null);
+  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
   const [openViewModal, setOpenViewModal] = React.useState(false);
   const { logout } = useUser();
 
-  const { data } = useGetMeQuery(undefined)
+  const { data: user } = useCurrentUser()
 
   const router = useRouter()
 
@@ -63,13 +63,13 @@ export function ProfileDropdown() {
           {/*</DropdownMenuItem>*/}
           <DropdownMenuItem
             onClick={() => {
-              const role = data?.data?.role;
+              const role = user?.role;
 
-              if (role === "ADMIN" || role === "MANAGER" || role === "MODERATOR") {
-                setSelectedUser(data?.data || null);
+              if (role === "ADMIN" || role === "MANAGER") {
+                setSelectedUser(user || null);
                 setOpenViewModal(true);
               } else {
-                setSelectedUser(data?.data || null);
+                setSelectedUser(user || null);
                 setOpenViewModal(true);
               }
             }}
@@ -83,8 +83,8 @@ export function ProfileDropdown() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem disabled>
-          <User />
-          {data?.data?.role}
+          <UserIcon />
+          {user?.role}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={handleLogout}>
