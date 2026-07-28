@@ -20,7 +20,7 @@ import { LogOut, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 
-interface PremiumSidebarProps extends React.ComponentProps<typeof Sidebar> {}
+type PremiumSidebarProps = React.ComponentProps<typeof Sidebar>;
 
 export function PremiumSidebar(props: PremiumSidebarProps) {
   const { data: user, isLoading } = useCurrentUser();

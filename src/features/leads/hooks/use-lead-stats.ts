@@ -21,10 +21,10 @@ export const useLeadStats = () => {
     converted.isLoading ||
     lost.isLoading;
 
-  const totalCount = total.data?.data.meta?.total ?? 0;
-  const newCount = newLeads.data?.data.meta?.total ?? 0;
-  const convertedCount = converted.data?.data.meta?.total ?? 0;
-  const lostCount = lost.data?.data.meta?.total ?? 0;
+  const totalCount = total.data?.meta?.total ?? 0;
+  const newCount = newLeads.data?.meta?.total ?? 0;
+  const convertedCount = converted?.data?.meta?.total ?? 0;
+  const lostCount = lost.data?.meta?.total ?? 0;
 
   const conversionRate =
     totalCount > 0 ? (convertedCount / totalCount) * 100 : 0;

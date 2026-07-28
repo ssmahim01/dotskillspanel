@@ -10,15 +10,6 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-/**
- * Premium Dashboard Layout Component
- * Provides a modern, responsive dashboard shell with sidebar, header, and content area
- * Features:
- * - Dynamic role-based sidebar navigation
- * - Sticky header with search, notifications, theme toggle, user menu
- * - Responsive design (desktop sidebar, mobile drawer)
- * - Dark/light mode support
- */
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { isLoading } = useCurrentUser();
 

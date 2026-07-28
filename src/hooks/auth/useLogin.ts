@@ -9,7 +9,7 @@ import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/stores";
 import type { LoginPayload } from "@/types";
 
-const DEFAULT_REDIRECT_PATH = "/dashboard";
+const DEFAULT_REDIRECT_PATH = "/dashboard/leads";
 
 export function useLogin() {
   const router = useRouter();

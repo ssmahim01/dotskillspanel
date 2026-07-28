@@ -18,7 +18,6 @@ import { useCurrentUser } from "@/hooks/auth/useCurrentUser"
 import { ProfileAvatar } from "./ProfileAvatar"
 import React from "react";
 import type { User } from "@/types";
-import UserDetailsModal from "@/components/dashboard/user/UserDetailsModal";
 import { useUser } from "@/context/UserContext"
 
 export function ProfileDropdown() {
@@ -94,13 +93,13 @@ export function ProfileDropdown() {
         </DropdownMenuItem>
       </DropdownMenuContent>
 
-      {selectedUser && (
+      {/* {selectedUser && (
         <UserDetailsModal
           open={openViewModal}
           onOpenChange={setOpenViewModal}
           user={selectedUser}
         />
-      )}
+      )} */}
     </DropdownMenu>
   )
 }

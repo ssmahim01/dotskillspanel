@@ -8,7 +8,6 @@ export { HeaderSearch } from "./header/HeaderSearch";
 export { HeaderNotifications } from "./header/HeaderNotifications";
 export { ThemeToggle } from "./header/ThemeToggle";
 export { UserMenu } from "./header/UserMenu";
-export { DashboardContent } from "./DashboardContent";
 
 // Types
 export type { NavGroup, NavItem } from "@/lib/dashboard-config";

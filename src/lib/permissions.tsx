@@ -229,7 +229,6 @@ export const defaultRolePermissions: Record<UserRole, PageAccess[]> = {
     "dashboard",
     "analytics",
     "blogs",
-    "campaigns",
     "customer-management",
   ],
   STAFF: ["dashboard", "orders-management", "my-orders", "my-customers"],
