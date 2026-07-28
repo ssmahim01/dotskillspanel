@@ -78,7 +78,7 @@ export function PremiumSidebar(props: PremiumSidebarProps) {
       {/* Header - Logo/Brand */}
       <SidebarHeader className="border-b border-border/40 px-4 py-4">
         <Link
-          href="/staff/dashboard"
+          href="/dashboard"
           onClick={handleLinkClick}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >

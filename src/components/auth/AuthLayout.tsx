@@ -9,7 +9,7 @@ import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthIllustration } from "@/components/auth/AuthIllustration";
 import { useAuthStore } from "@/stores";
 
-const DEFAULT_AUTHENTICATED_PATH = "/dashboard";
+const DEFAULT_AUTHENTICATED_PATH = "/dashboard/leads";
 
 interface AuthLayoutProps {
   children: React.ReactNode;

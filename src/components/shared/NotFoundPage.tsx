@@ -29,7 +29,7 @@ export default function NotFoundPage() {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center mt-5">
 
                     <Link href="/">
-                        <Button className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-white">
+                        <Button className="w-full sm:w-auto bg-gray-500 hover:bg-gray-600 text-white">
                             <Home className="w-4 h-4 mr-2" />
                             Go Home
                         </Button>
@@ -46,10 +46,7 @@ export default function NotFoundPage() {
 
                 </div>
 
-                {/* Footer text */}
-                <p className="mt-8 text-xs text-gray-400">
-                    If you think this is a mistake, please contact support.
-                </p>
+               
 
             </div>
         </div>
