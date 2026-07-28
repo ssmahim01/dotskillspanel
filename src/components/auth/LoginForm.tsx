@@ -1,228 +1,132 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-"use client"
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, LogIn, Mail } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { Eye, EyeOff } from 'lucide-react'
+import { PasswordField } from "@/components/auth/PasswordField";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { useLogin } from "@/hooks/auth/useLogin";
+import { cn } from "@/lib/utils";
+import { loginSchema, type LoginFormValues } from "@/lib/schema/auth.schema";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-
-import Image from 'next/image'
-import logo from "../../../public/assets/FRN-Logo-scaled.webp"
-import { toast } from 'sonner'
-import { loginUser } from '@/utils/loginUser'
-import { useUser } from '@/context/UserContext'
-import {useRouter} from "next/navigation";
-
-
-const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-})
-
-type LoginFormValues = z.infer<typeof loginSchema>
-
-interface LoginFormProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSwitchToSignup: () => void;
-  onSwitchToForgot?: () => void;
-}
-
-export function LoginForm({
-  isOpen,
-  onClose,
-  onSwitchToSignup,
-  onSwitchToForgot,
-}: LoginFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const { login } = useUser();
-  const router = useRouter();
+export function LoginForm() {
+  const { mutate: login, isPending } = useLogin();
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-  })
+    resolver: zodResolver(loginSchema as any),
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
+  });
 
-  const onSubmit = async (data: LoginFormValues) => {
-     setIsLoading(true)
-        const res = await loginUser(data);
-
-        if (res.success) {
-            login(res.user.user);
-            if (res.user.user.role === "CUSTOMER" || res.user.user.role === "GENERALSTAFF") {
-                router.push("/staff/dashboard");
-            } else if ((res.user.user.role === "MANAGER") || (res.user.user.role === "MODERATOR"
-             || (res.user.user.role === "ADMIN") || (res.user.user.role === "TELLICELSS")
-            )) {
-                router.push("/staff/dashboard");
-            } else {
-                router.push("/");
-            }
-            toast.success("Login successful!");
-            setIsLoading(false)
-            onClose();
-        } else {
-            toast.error(res.message || "Login failed!");
-            setIsLoading(false)
-        }
+  function onSubmit(values: LoginFormValues) {
+    login(values);
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent
-        className="
-          sm:max-w-md max-h-[90vh] overflow-y-auto
-          border border-[#c9a84c]
-          bg-[#2D3436]
-          text-white
-          p-6
-        "
-      >
-        {/* Gold accent line at top */}
-        <div className="absolute left-0 right-0 top-0 h-0.5 rounded-t-lg bg-linear-to-r from-transparent via-[#c9a84c] to-transparent" />
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+      <div className="space-y-2">
+        <label htmlFor="email" className="text-sm font-medium text-foreground">
+          Email address
+        </label>
 
-        {/* Header */}
-        <DialogHeader className="flex flex-col items-center gap-2 pb-2">
-          <Image
-            src={logo}
-            alt="DotSkills"
-            height={60}
-            width={120}
-            className="object-contain"
+        <div className="relative">
+          <Mail
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
           />
-          <DialogTitle className="text-xl font-bold tracking-widest text-[#c9a84c] uppercase">
-            Welcome Back
-          </DialogTitle>
-          <DialogDescription className="text-[#96999A] text-sm tracking-wide">
-            Log in to continue to DotSkills Panel
-          </DialogDescription>
-        </DialogHeader>
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@company.com"
+            autoComplete="email"
+            disabled={isPending}
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={cn(
+              "h-11 rounded-xl border-border/80 bg-background/60 pl-9 transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/40",
+              errors.email && "border-destructive focus-visible:ring-destructive/40",
+            )}
+            {...register("email")}
+          />
+        </div>
 
-        {/* Divider */}
-        <div className="my-1 h-px bg-[#3d4f51]" />
+        {errors.email?.message && (
+          <p id="email-error" className="text-sm font-medium text-destructive">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-1">
+      <PasswordField
+        control={control}
+        name="password"
+        disabled={isPending}
+        labelSlot={
+          <Link
+            href="/forgot-password"
+            tabIndex={isPending ? -1 : 0}
+            className="rounded text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
+            Forgot password?
+          </Link>
+        }
+      />
 
-          {/* Email */}
-          <div className="space-y-1.5">
-            <Label className="text-[#c9a84c] text-xs font-semibold tracking-widest uppercase">
-              Email Address
-            </Label>
-            <Input
-              type="email"
-              placeholder="you@example.com"
-              {...register("email")}
-              className="
-                border-[#4a5568] bg-[#1e2829]
-                text-white placeholder:text-[#96999A]
-                focus-visible:ring-[#c9a84c] focus-visible:border-[#c9a84c]
-                transition-colors
-              "
+      <div className="flex flex-row items-center">
+        <Controller
+          control={control}
+          name="rememberMe"
+          render={({ field }) => (
+            <Checkbox
+              id="rememberMe"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              disabled={isPending}
+              className="data-[state=checked]:border-primary data-[state=checked]:bg-primary"
             />
-            {errors.email && (
-              <p className="text-xs text-red-400">{errors.email.message}</p>
-            )}
-          </div>
+          )}
+        />
+        <label
+          htmlFor="rememberMe"
+          className="cursor-pointer pl-2.5 text-sm font-normal text-muted-foreground"
+        >
+          Remember me for 30 days
+        </label>
+      </div>
 
-          {/* Password */}
-          <div className="space-y-1.5">
-            <Label className="text-[#c9a84c] text-xs font-semibold tracking-widest uppercase">
-              Password
-            </Label>
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                {...register("password")}
-                className="
-                  border-[#4a5568] bg-[#1e2829]
-                  text-white placeholder:text-[#96999A] pr-10
-                  focus-visible:ring-[#c9a84c] focus-visible:border-[#c9a84c]
-                  transition-colors
-                "
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#96999A] hover:text-[#c9a84c] transition-colors"
-              >
-                {showPassword
-                  ? <EyeOff className="h-4 w-4" />
-                  : <Eye className="h-4 w-4" />
-                }
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-xs text-red-400">{errors.password.message}</p>
-            )}
-          </div>
-
-          {/* Forgot password */}
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={() => { onClose(); onSwitchToForgot?.(); }}
-              className="text-xs text-[#c9a84c] hover:underline transition-opacity font-medium"
-            >
-              Forgot password?
-            </button>
-          </div>
-
-          {/* Submit */}
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="
-              w-full
-              bg-[#c9a84c] hover:bg-[#d4b86a]
-              text-[#0f1e0f] font-bold tracking-widest uppercase
-              transition-colors disabled:opacity-60
-            "
-          >
-            {isLoading ? (
-              <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#0f1e0f] border-t-transparent" />
-                Logging in...
-              </span>
-            ) : (
-              "Log In"
-            )}
-          </Button>
-        </form>
-
-        {/* Divider */}
-        <div className="my-1 h-px bg-[#3d4f51]" />
-
-        {/* Switch to signup */}
-        <p className="text-center text-sm text-[#96999A]">
-          Don&apos;t have an account?{" "}
-          <button
-            type="button"
-            onClick={() => { onClose(); onSwitchToSignup(); }}
-            className="text-[#c9a84c] font-semibold hover:underline transition-opacity"
-          >
-            Sign up
-          </button>
-        </p>
-      </DialogContent>
-    </Dialog>
-  )
+      <Button
+        type="submit"
+        disabled={isPending}
+        className="group h-11 w-full rounded-xl bg-primary font-medium text-primary-foreground shadow-[0_1px_2px_rgba(79,70,229,0.1),0_8px_20px_-8px_rgba(79,70,229,0.5)] transition-all hover:bg-primary/90 hover:shadow-[0_1px_2px_rgba(79,70,229,0.15),0_10px_24px_-8px_rgba(79,70,229,0.6)] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-70"
+      >
+        {isPending ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+            Signing in&hellip;
+          </>
+        ) : (
+          <>
+            Sign in
+            <LogIn
+              className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </>
+        )}
+      </Button>
+    </form>
+  );
 }

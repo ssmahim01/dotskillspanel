@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { AppProvider } from "@/providers";
 import AppBootstrap from "@/components/shared/AppBootstrap";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -101,7 +102,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <body className="min-h-screen bg-background font-sans antialiased">
         <AppProvider>
-          <AppBootstrap>{children}</AppBootstrap>
+          <AppBootstrap><Toaster position="top-center" />{children}</AppBootstrap>
         </AppProvider>
       </body>
     </html>

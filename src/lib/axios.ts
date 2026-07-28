@@ -55,8 +55,7 @@ api.interceptors.response.use(
   (response) => response,
 
   async (error: AxiosError<ApiErrorResponse>) => {
-    const originalRequest =
-      error.config as RetryAxiosRequestConfig;
+    const originalRequest = error.config as RetryAxiosRequestConfig;
 
     if (!originalRequest) {
       return Promise.reject(normalizeAxiosError(error));
@@ -64,53 +63,68 @@ api.interceptors.response.use(
 
     const status = error.response?.status;
 
-    const isRefreshRequest =
-      originalRequest.url?.includes(API.TOKEN_REFRESH_ENDPOINT);
+    const pathname =
+      typeof window !== "undefined" ? window.location.pathname : "";
 
-    if (
-      status === HTTP_STATUS.UNAUTHORIZED &&
-      !originalRequest._retry &&
-      !isRefreshRequest
-    ) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({
-            resolve: () => resolve(api(originalRequest)),
-            reject,
-          });
-        });
-      }
+    const isAuthPage =
+      pathname === "/login" ||
+      pathname === "/register" ||
+      pathname === "/forgot-password" ||
+      pathname === "/reset-password";
 
-      originalRequest._retry = true;
+    const isRefreshRequest = originalRequest.url?.includes(
+      API.TOKEN_REFRESH_ENDPOINT,
+    );
 
-      isRefreshing = true;
-
-      try {
-        await axios.post<ApiResponse<null>>(
-          `${API.BASE_URL}${API.TOKEN_REFRESH_ENDPOINT}`,
-          {},
-          {
-            withCredentials: true,
-          },
-        );
-
-        processQueue();
-
-        return api(originalRequest);
-      } catch (refreshError) {
-        processQueue(refreshError);
-
-        if (typeof window !== "undefined") {
-          window.location.replace("/login");
-        }
-
-        return Promise.reject(refreshError);
-      } finally {
-        isRefreshing = false;
-      }
+    // Don't try to refresh while already on auth pages
+    if (isAuthPage) {
+      return Promise.reject(normalizeAxiosError(error));
     }
 
-    return Promise.reject(normalizeAxiosError(error));
+    if (
+      status !== HTTP_STATUS.UNAUTHORIZED ||
+      originalRequest._retry ||
+      isRefreshRequest
+    ) {
+      return Promise.reject(normalizeAxiosError(error));
+    }
+
+    if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve: () => resolve(api(originalRequest)),
+          reject,
+        });
+      });
+    }
+
+    originalRequest._retry = true;
+    isRefreshing = true;
+
+    try {
+      await api.post<ApiResponse<null>>(API.TOKEN_REFRESH_ENDPOINT, {});
+
+      processQueue();
+
+      return api(originalRequest);
+    } catch (refreshError) {
+      processQueue(refreshError);
+
+      if (
+        typeof window !== "undefined" &&
+        window.location.pathname !== "/login"
+      ) {
+        window.location.replace("/login");
+      }
+
+      return Promise.reject(
+        refreshError instanceof AxiosError
+          ? normalizeAxiosError(refreshError)
+          : refreshError,
+      );
+    } finally {
+      isRefreshing = false;
+    }
   },
 );
 
@@ -144,9 +158,7 @@ export const normalizeAxiosError = (
   error: AxiosError<ApiErrorResponse>,
 ): ApiError => {
   return new ApiError(
-    error.response?.data?.message ??
-      error.message ??
-      "Something went wrong.",
+    error.response?.data?.message ?? error.message ?? "Something went wrong.",
 
     error.response?.status,
 
@@ -155,10 +167,7 @@ export const normalizeAxiosError = (
 };
 
 export const apiClient = {
-  async get<T>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<T> {
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await api.get<T>(url, config);
 
     return response.data;
@@ -169,11 +178,7 @@ export const apiClient = {
     data?: unknown,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response = await api.post<T>(
-      url,
-      data,
-      config,
-    );
+    const response = await api.post<T>(url, data, config);
 
     return response.data;
   },
@@ -183,11 +188,7 @@ export const apiClient = {
     data?: unknown,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response = await api.put<T>(
-      url,
-      data,
-      config,
-    );
+    const response = await api.put<T>(url, data, config);
 
     return response.data;
   },
@@ -197,23 +198,13 @@ export const apiClient = {
     data?: unknown,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response = await api.patch<T>(
-      url,
-      data,
-      config,
-    );
+    const response = await api.patch<T>(url, data, config);
 
     return response.data;
   },
 
-  async delete<T>(
-    url: string,
-    config?: AxiosRequestConfig,
-  ): Promise<T> {
-    const response = await api.delete<T>(
-      url,
-      config,
-    );
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await api.delete<T>(url, config);
 
     return response.data;
   },

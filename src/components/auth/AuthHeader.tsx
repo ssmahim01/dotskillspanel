@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface AuthHeaderProps {
   className?: string;
+  /** "inverted" is used on the dark illustration panel. */
   variant?: "default" | "inverted";
 }
 

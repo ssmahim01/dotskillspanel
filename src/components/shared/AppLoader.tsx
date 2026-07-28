@@ -30,7 +30,7 @@ export default function AppLoader({
         className,
       )}
     >
-      {/* Ambient amber glow backdrop — purely decorative, GPU-friendly */}
+      {/* Ambient slate glow backdrop — purely decorative, GPU-friendly */}
       <div
         aria-hidden="true"
         className={cn("pointer-events-none absolute inset-0 overflow-hidden")}
@@ -38,7 +38,7 @@ export default function AppLoader({
         <div
           className={cn(
             "absolute left-1/2 top-1/2 h-105 w-105 -translate-x-1/2 -translate-y-1/2",
-            "rounded-full bg-amber-400/10 dark:bg-amber-500/10 blur-3xl",
+            "rounded-full bg-slate-400/10 dark:bg-slate-500/10 blur-3xl",
             "animate-loader-glow",
           )}
         />
@@ -51,7 +51,7 @@ export default function AppLoader({
           {/* Soft glow ring behind logo */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-amber-500/20 blur-xl animate-loader-pulse-glow"
+            className="absolute inset-0 rounded-full bg-slate-500/20 blur-xl animate-loader-pulse-glow"
           />
           <Image
             src="/assets/DotSkills Panel.png"
@@ -66,7 +66,7 @@ export default function AppLoader({
         {/* Brand name */}
         <div className="flex flex-col items-center gap-1.5">
           <h1 className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white sm:text-xl">
-            DotSkills <span className="text-amber-500">Panel</span>
+            DotSkills <span className="text-slate-500">Panel</span>
           </h1>
 
           {/* Status text */}
@@ -77,9 +77,9 @@ export default function AppLoader({
 
         {/* Loading dots indicator */}
         <div className="flex items-center gap-1.5" aria-hidden="true">
-          <span className="h-2 w-2 rounded-full bg-amber-500 animate-loader-dot [animation-delay:-0.32s]" />
-          <span className="h-2 w-2 rounded-full bg-amber-500 animate-loader-dot [animation-delay:-0.16s]" />
-          <span className="h-2 w-2 rounded-full bg-amber-500 animate-loader-dot" />
+          <span className="h-2 w-2 rounded-full bg-slate-500 animate-loader-dot [animation-delay:-0.32s]" />
+          <span className="h-2 w-2 rounded-full bg-slate-500 animate-loader-dot [animation-delay:-0.16s]" />
+          <span className="h-2 w-2 rounded-full bg-slate-500 animate-loader-dot" />
         </div>
       </div>
 

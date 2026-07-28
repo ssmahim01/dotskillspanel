@@ -1,43 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Eye, EyeOff, Lock } from "lucide-react";
-import type { UseFormRegisterReturn } from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-interface PasswordFieldProps {
-  id: string;
+interface PasswordFieldProps<TFieldValues extends FieldValues> {
+  control: Control<TFieldValues>;
+  name: FieldPath<TFieldValues>;
   label?: string;
   placeholder?: string;
   autoComplete?: string;
   disabled?: boolean;
-  registration: UseFormRegisterReturn;
-  error?: string;
+  /** Optional element rendered inline with the label, e.g. a "Forgot password?" link. */
   labelSlot?: React.ReactNode;
 }
 
-export function PasswordField({
-  id,
+export function PasswordField<TFieldValues extends FieldValues>({
+  control,
+  name,
   label = "Password",
   placeholder = "Enter your password",
   autoComplete = "current-password",
-  disabled = false,
-  registration,
-  error,
+  disabled,
   labelSlot,
-}: PasswordFieldProps) {
-  const [showPassword, setShowPassword] = useState(false);
+}: PasswordFieldProps<TFieldValues>) {
+  const [visible, setVisible] = useState(false);
+  const inputId = useId();
+  const errorId = useId();
+
+  const {
+    field,
+    fieldState: { error },
+  } = useController({ control, name });
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <Label htmlFor={id} className="text-sm font-medium text-foreground">
+      <div className="flex items-center justify-between gap-4">
+        <label htmlFor={inputId} className="text-sm font-medium text-foreground">
           {label}
-        </Label>
-
+        </label>
         {labelSlot}
       </div>
 
@@ -48,34 +53,52 @@ export function PasswordField({
         />
 
         <Input
-          id={id}
-          {...registration}
-          type={showPassword ? "text" : "password"}
+          ref={field?.ref}
+          name={field?.name}
+          value={field?.value ?? ""}
+          onChange={field?.onChange}
+          onBlur={field?.onBlur}
+          id={inputId}
+          type={visible ? "text" : "password"}
           placeholder={placeholder}
           autoComplete={autoComplete}
           disabled={disabled}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
           className={cn(
-            "h-11 rounded-xl pl-10 pr-10",
-            error && "border-destructive focus-visible:ring-destructive",
+            "h-11 rounded-xl border-border/80 bg-background/60 pl-9 pr-10",
+            "transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/40",
+            error && "border-destructive focus-visible:ring-destructive/40",
           )}
         />
 
         <button
           type="button"
-          onClick={() => setShowPassword((prev) => !prev)}
+          onClick={() => setVisible((prev) => !prev)}
           disabled={disabled}
-          aria-label={showPassword ? "Hide password" : "Show password"}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+          aria-label={visible ? "Hide password" : "Show password"}
+          aria-pressed={visible}
+          className={cn(
+            "absolute right-2 top-1/2 -translate-y-1/2",
+            "flex h-7 w-7 items-center justify-center rounded-lg",
+            "text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+            "disabled:pointer-events-none disabled:opacity-50",
+          )}
         >
-          {showPassword ? (
-            <EyeOff className="h-4 w-4" />
+          {visible ? (
+            <EyeOff className="h-4 w-4" aria-hidden="true" />
           ) : (
-            <Eye className="h-4 w-4" />
+            <Eye className="h-4 w-4" aria-hidden="true" />
           )}
         </button>
       </div>
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error?.message && (
+        <p id={errorId} className="text-sm font-medium text-destructive">
+          {error.message}
+        </p>
+      )}
     </div>
   );
 }

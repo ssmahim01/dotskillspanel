@@ -130,9 +130,6 @@
   }
 }
 
-/*---------------- common css in project --------------*/
-
-
 @keyframes fadeIn {
     from { opacity: 1; transform: translateY(-100px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -142,20 +139,9 @@
     animation: fadeIn 0.5s ease-out forwards;
 }
 
-
 .primaryDark{
   background: #2D3436;
 }
-
-/*hero section*/
-.heroBannerCover {
-  background-image: url("../../public/assets/herobanner.webp");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-
 
 /*product text editor*/
 .ProseMirror p {

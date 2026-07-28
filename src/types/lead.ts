@@ -1,0 +1,244 @@
+import type { ApiResponse } from "@/types";
+
+export enum LeadStatus {
+  NEW = "NEW",
+  CONTACTED = "CONTACTED",
+  QUALIFIED = "QUALIFIED",
+  PROPOSAL_SENT = "PROPOSAL_SENT",
+  NEGOTIATION = "NEGOTIATION",
+  ON_HOLD = "ON_HOLD",
+  WON = "WON",
+  LOST = "LOST",
+}
+
+export enum LeadPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  URGENT = "URGENT",
+}
+
+export enum LeadSource {
+  WEBSITE = "WEBSITE",
+  FACEBOOK = "FACEBOOK",
+  GOOGLE = "GOOGLE",
+  LINKEDIN = "LINKEDIN",
+  WHATSAPP = "WHATSAPP",
+  EMAIL = "EMAIL",
+  PHONE_CALL = "PHONE_CALL",
+  REFERRAL = "REFERRAL",
+  MANUAL = "MANUAL",
+  OTHER = "OTHER",
+}
+
+export enum PreferredContactMethod {
+  PHONE = "PHONE",
+  EMAIL = "EMAIL",
+  WHATSAPP = "WHATSAPP",
+  SMS = "SMS",
+}
+
+export enum AttachmentType {
+  IMAGE = "IMAGE",
+  DOCUMENT = "DOCUMENT",
+  SPREADSHEET = "SPREADSHEET",
+  PDF = "PDF",
+  OTHER = "OTHER",
+}
+
+export interface IUserSummary {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  designation?: string;
+}
+
+export interface ILeadAttachment {
+  _id?: string;
+  title: string;
+  url: string;
+  type: AttachmentType;
+  uploadedAt?: string;
+}
+
+export interface ILeadNote {
+  _id?: string;
+  message: string;
+  createdBy: IUserSummary;
+  createdAt?: string;
+}
+
+export interface ILead {
+  _id: string;
+
+  firstName: string;
+  lastName: string;
+  fullName?: string;
+
+  email?: string;
+
+  phone: string;
+  alternatePhone?: string;
+
+  company?: string;
+  website?: string;
+  industry?: string;
+  jobTitle?: string;
+  employeeSize?: string;
+
+  country?: string;
+  state?: string;
+  city?: string;
+  zipCode?: string;
+  address?: string;
+
+  source: LeadSource;
+  status: LeadStatus;
+  priority: LeadPriority;
+
+  pipelineStage?: string;
+
+  estimatedValue?: number;
+  expectedCloseDate?: string;
+
+  assignedTo?: IUserSummary;
+
+  createdBy?: IUserSummary;
+  updatedBy?: IUserSummary;
+  convertedBy?: IUserSummary;
+
+  preferredContactMethod?: PreferredContactMethod;
+
+  tags: string[];
+  labels: string[];
+
+  requirementTitle?: string;
+  requirementDescription?: string;
+
+  budget?: number;
+  timeline?: string;
+
+  technologies: string[];
+  services: string[];
+
+  attachments: ILeadAttachment[];
+  notes: ILeadNote[];
+
+  customFields?: Record<string, unknown>;
+
+  isConverted: boolean;
+  convertedAt?: string;
+
+  clientId?: string;
+
+  isDeleted: boolean;
+
+  deletedAt?: string;
+
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateLeadPayload {
+  firstName: string;
+  lastName: string;
+
+  email?: string;
+
+  phone: string;
+  alternatePhone?: string;
+
+  company?: string;
+  website?: string;
+  industry?: string;
+  jobTitle?: string;
+  employeeSize?: string;
+
+  country?: string;
+  state?: string;
+  city?: string;
+  zipCode?: string;
+  address?: string;
+
+  source: LeadSource;
+
+  priority?: LeadPriority;
+
+  pipelineStage?: string;
+
+  estimatedValue?: number;
+
+  expectedCloseDate?: string;
+
+  assignedTo?: string;
+
+  preferredContactMethod?: PreferredContactMethod;
+
+  tags?: string[];
+  labels?: string[];
+
+  requirementTitle?: string;
+  requirementDescription?: string;
+
+  budget?: number;
+
+  timeline?: string;
+
+  technologies?: string[];
+  services?: string[];
+
+  customFields?: Record<string, unknown>;
+}
+
+export type UpdateLeadPayload = Partial<CreateLeadPayload>;
+
+export interface UpdateLeadStatusPayload {
+  status: LeadStatus;
+}
+
+export interface AssignLeadPayload {
+  assignedTo: string;
+}
+
+export interface ConvertLeadPayload {
+  clientId?: string;
+}
+
+export interface AddLeadNotePayload {
+  message: string;
+}
+
+export interface AddLeadAttachmentPayload {
+  title: string;
+  url: string;
+  type?: AttachmentType;
+}
+
+export interface LeadFilters {
+  searchTerm?: string;
+
+  page?: number;
+  limit?: number;
+
+  sort?: string;
+
+  source?: LeadSource;
+  status?: LeadStatus;
+  priority?: LeadPriority;
+
+  assignedTo?: string;
+
+  isConverted?: boolean;
+
+  "createdAt[gte]"?: string;
+  "createdAt[lte]"?: string;
+}
+
+export type GetLeadsResponse = ApiResponse<ILead[]>;
+
+export type GetLeadResponse = ApiResponse<ILead>;
+
+export type LeadMutationResponse = ApiResponse<ILead>;
+
+export type DeleteLeadResponse = ApiResponse<null>;
