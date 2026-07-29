@@ -25,7 +25,7 @@ import type { User } from "@/types/user.types";
 import { UserAvatar } from "./user-avatar";
 import { RoleBadge } from "./role-badge";
 import { StatusBadge } from "./status-badge";
-import { getRoleStyle } from "@/lib/user-badges";
+import { getRoleStyle } from "@/features/users/utils/user-badges";
 
 interface UserDetailsSheetProps {
   user?: User;

@@ -6,7 +6,6 @@ export { DashboardHeader } from "./header/DashboardHeader";
 export { HeaderBreadcrumbs } from "./header/HeaderBreadcrumbs";
 export { HeaderSearch } from "./header/HeaderSearch";
 export { HeaderNotifications } from "./header/HeaderNotifications";
-export { ThemeToggle } from "./header/ThemeToggle";
 export { UserMenu } from "./header/UserMenu";
 
 // Types

@@ -4,18 +4,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function DashboardManagementPageSkeleton() {
   return (
     <div className="p-4">
-      <div className="h-8 w-48 bg-gray-100 rounded mb-6" />
+      <div className="h-8 w-48 bg-muted rounded mb-6" />
 
       <div className="flex justify-between mb-4">
         <div className="flex items-center space-x-2">
           <Skeleton className="h-10 w-64" />
 
-          <div className="h-10 w-24 bg-gray-100 rounded flex items-center justify-center">
+          <div className="h-10 w-24 bg-muted rounded flex items-center justify-center">
             <Skeleton className="h-4 w-4 mr-2" />
             <Skeleton className="h-4 w-10" />
           </div>
         </div>
-        <div className="h-10 w-28 bg-gray-100 rounded" />
+        <div className="h-10 w-28 bg-muted rounded" />
       </div>
 
       <div className="border rounded-md overflow-hidden">

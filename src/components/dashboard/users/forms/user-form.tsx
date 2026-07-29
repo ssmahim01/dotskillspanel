@@ -148,7 +148,7 @@ export function UserForm({ user, isLoading, onSubmit }: UserFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} noValidate className="space-y-8">
+    <form onSubmit={handleSubmit(handleFormSubmit)} noValidate className="bg-gray-100 dark:bg-slate-950 space-y-8">
       {submitError && (
         <div className="flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/5 p-3.5">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" aria-hidden="true" />

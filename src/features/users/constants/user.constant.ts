@@ -71,9 +71,9 @@ function getRoleColor(role: string): string {
     [Role.DEVELOPER]: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
     [Role.DESIGNER]: "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200",
     [Role.MARKETER]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-    [Role.STAFF]: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200",
+    [Role.STAFF]: "bg-muted text-gray-800 dark:bg-gray-700 dark:text-gray-200",
   };
-  return colors[role] || "bg-gray-100 text-gray-800";
+  return colors[role] || "bg-muted text-gray-800";
 }
 
 function getStatusColor(status: string): string {
@@ -82,5 +82,5 @@ function getStatusColor(status: string): string {
     [UserStatus.INACTIVE]: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
     [UserStatus.SUSPENDED]: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
   };
-  return colors[status] || "bg-gray-100 text-gray-800";
+  return colors[status] || "bg-muted text-gray-800";
 }

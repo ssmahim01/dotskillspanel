@@ -25,7 +25,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <DashboardHeader />
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-hidden">
+        <main className="bg-gray-100 dark:bg-slate-950 flex-1 overflow-hidden">
           <div className="h-full overflow-auto">
             <div className="min-h-full">
               <div className="flex flex-col gap-4 p-4">

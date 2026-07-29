@@ -62,7 +62,7 @@ export function SidebarNavItems({ groups }: SidebarNavItemsProps) {
                         "gap-2.5 rounded-lg font-normal text-sidebar-foreground/80 transition-colors",
                         "hover:bg-primary/8 hover:text-sidebar-foreground",
                         isActive &&
-                          "bg-primary font-medium text-primary-foreground shadow-sm hover:bg-primary hover:text-primary-foreground",
+                          "bg-indigo-600 dark:bg-indigo-700 font-medium text-white shadow-sm hover:bg-indigo-800 hover:text-primary-foreground",
                       )}
                     >
                       <Link href={item.href} onClick={handleNavClick} title={item.description}>
@@ -125,7 +125,12 @@ export function SidebarNavItems({ groups }: SidebarNavItemsProps) {
                             kept as a single link for now to match the current type. */}
                         <SidebarMenuSubItem>
                           <SidebarMenuSubButton asChild isActive={isActive}>
-                            <Link href={item.href} onClick={handleNavClick}>
+                            <Link href={item.href} onClick={handleNavClick}  className={cn(
+                        "gap-2.5 rounded-lg font-normal text-sidebar-foreground/80 transition-colors",
+                        "hover:bg-primary/8 hover:text-sidebar-foreground",
+                        isActive &&
+                          "bg-indigo-600 dark:bg-indigo-700 font-medium text-white shadow-sm hover:bg-indigo-800 hover:text-primary-foreground",
+                      )}>
                               {item.label}
                             </Link>
                           </SidebarMenuSubButton>

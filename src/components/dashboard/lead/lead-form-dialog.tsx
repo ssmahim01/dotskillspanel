@@ -40,6 +40,7 @@ import {
   type CreateLeadFormValues,
 } from "@/features/leads/schemas/lead.schema";
 import type { ILead } from "@/types/lead";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface LeadFormDialogProps {
   mode: "create" | "edit";
@@ -158,8 +159,8 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
+          
           <DialogTitle>{mode === "create" ? "Add New Lead" : "Edit Lead"}</DialogTitle>
           <DialogDescription>
             {mode === "create"
@@ -167,6 +168,8 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
               : "Update this lead's information."}
           </DialogDescription>
         </DialogHeader>
+        <DialogContent className="bg-gray-100 dark:bg-slate-950 not-last-of-type:max-h-[90vh] max-w-2xl overflow-y-auto">
+     <ScrollArea className="max-h-[80vh] pr-2"> 
 
         <form onSubmit={onSubmit} className="flex flex-col gap-6">
           <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -322,6 +325,7 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
             </Button>
           </DialogFooter>
         </form>
+        <ScrollBar orientation="vertical" /></ScrollArea>
       </DialogContent>
     </Dialog>
   );

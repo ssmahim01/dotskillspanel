@@ -81,7 +81,7 @@ export function UsersTable({
   }, [selectedRows]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-gray-100 dark:bg-slate-950">
       <div className="flex items-center justify-between">
         <div className="text-sm text-[var(--muted-fg)]">
           {selectedRows.length > 0 ? (
@@ -117,7 +117,7 @@ export function UsersTable({
         </DropdownMenu>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]">
+      <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-gray-100 dark:bg-slate-950">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

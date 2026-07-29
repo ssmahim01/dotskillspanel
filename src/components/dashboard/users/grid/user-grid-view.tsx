@@ -15,6 +15,7 @@ import type { User } from "@/types/user.types";
 import { UserAvatar } from "../user-avatar";
 import { RoleBadge } from "../role-badge";
 import { StatusBadge } from "../status-badge";
+import { getRoleStyle } from "@/features/users/utils/user-badges";
 
 interface UserGridViewProps {
   users: User[];
@@ -65,13 +66,13 @@ export function UserGridView({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="bg-gray-100 dark:bg-slate-950 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {users.map((user) => {
         const style = getRoleStyle(user.role);
         return (
           <Card
             key={user._id}
-            className="group cursor-pointer overflow-hidden border-[var(--border)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)]"
+            className="bg-gray-100 dark:bg-slate-950 p-0 group cursor-pointer overflow-hidden border-[var(--border)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)]"
             onClick={() => onViewDetails(user)}
           >
             <CardHeader
@@ -140,7 +141,7 @@ export function UserGridView({
               className="-mt-8 ml-5"
             />
 
-            <CardContent className="space-y-4 pt-3">
+            <CardContent className="space-y-4 py-3">
               <div>
                 <h3 className="truncate text-base font-semibold text-[var(--foreground)] group-hover:text-[var(--brand-cobalt)]">
                   {user.fullName}

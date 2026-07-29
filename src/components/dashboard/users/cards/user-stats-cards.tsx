@@ -44,7 +44,7 @@ export function UserStatsCards({ stats, isLoading }: UserStatsCardsProps) {
         return (
           <Card
             key={stat.title}
-            className="hover:shadow-md transition-shadow duration-200"
+            className="bg-gray-100 dark:bg-slate-950 hover:shadow-md transition-shadow duration-200"
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground">

@@ -1,56 +1,25 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/providers/ThemeProvider";
 
-export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+export default function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-9 w-9 rounded-lg hover:bg-accent/50"
-          title="Toggle theme"
-        >
-          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onClick={() => setTheme("light")}
-          className={theme === "light" ? "bg-accent" : ""}
-        >
-          <Sun className="h-4 w-4 mr-2" />
-          <span>Light</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme("dark")}
-          className={theme === "dark" ? "bg-accent" : ""}
-        >
-          <Moon className="h-4 w-4 mr-2" />
-          <span>Dark</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => setTheme("system")}
-          className={theme === "system" ? "bg-accent" : ""}
-        >
-          <Sun className="h-4 w-4 mr-2" />
-          <span>System</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      className="h-10 w-10 rounded-lg transition-all duration-200 active:scale-95"
+      title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+    >
+      {theme === "light" ? (
+        <Moon style={{width: "25px", height: "25px"}} />
+      ) : (
+        <Sun style={{width: "25px", height: "25px"}} />
+      )}
+    </Button>
   );
 }

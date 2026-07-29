@@ -115,7 +115,7 @@ const DateFilter = ({ onChange }: DateFilterProps) => {
                         "inline-flex  shrink-0 items-center gap-2 rounded-lg border px-3 text-sm font-medium transition-all duration-200",
                         dateFilter.from
                             ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700 dark:bg-blue-900/20 dark:text-blue-400"
-                            : "border-gray-200 bg-gray-50/60 text-gray-600 hover:border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800/60 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800",
+                            : "border-gray-200 bg-gray-50/60 text-gray-600 hover:border-gray-300 hover:bg-muted dark:border-gray-700 dark:bg-gray-800/60 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-800",
                     )}
                 >
                     {dateFilter.from ? (

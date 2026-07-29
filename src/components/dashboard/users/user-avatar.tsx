@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getInitials, getRoleStyle } from "@/lib/user-badges";
+import { getRoleStyle } from "@/features/users/utils/user-badges";
+import { getInitials } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface UserAvatarProps {

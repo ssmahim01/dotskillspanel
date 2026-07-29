@@ -5,8 +5,8 @@ import { Separator } from "@/components/ui/separator";
 import { HeaderBreadcrumbs } from "./HeaderBreadcrumbs";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderNotifications } from "./HeaderNotifications";
-import { ThemeToggle } from "./ThemeToggle";
 import { UserMenu } from "./UserMenu";
+import ThemeToggle from "./ThemeToggle";
 
 export function DashboardHeader() {
   return (

@@ -62,12 +62,12 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
     return (
       <Sidebar {...props}>
         <SidebarHeader className="border-b border-border/50 px-4 py-4">
-          <div className="h-10 w-full animate-pulse rounded-lg bg-muted" />
+          <div className="h-10 w-full animate-pulse rounded-lg bg-gray-100" />
         </SidebarHeader>
         <SidebarContent className="px-3 py-4">
           <div className="space-y-2.5">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-9 animate-pulse rounded-lg bg-muted" />
+              <div key={i} className="h-9 animate-pulse rounded-lg bg-gray-100" />
             ))}
           </div>
         </SidebarContent>
@@ -93,10 +93,10 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
   return (
     <Sidebar
       {...props}
-      className={cn("border-r border-border/60 bg-sidebar", props.className)}
+      className={cn("border-r border-border/60 bg-gray-100 dark:bg-slate-950", props.className)}
     >
       {/* Brand */}
-      <SidebarHeader className="gap-3 border-b border-border/60 px-3 py-4">
+      <SidebarHeader className="gap-3 border-b border-border/60 bg-gray-100 dark:bg-slate-950 px-3 py-4">
         <Link
           href="/dashboard"
           onClick={handleLinkClick}
@@ -125,7 +125,7 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
                 variant="outline"
                 size="icon"
                 onClick={handleSearch}
-                className="h-9 w-9 rounded-lg border-border/60 bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="h-9 w-9 rounded-lg border-border/60 dark:bg-slate-800 bg-gray-100/40 text-muted-foreground hover:bg-gray-100 hover:text-foreground"
               >
                 <Search className="h-4 w-4" aria-hidden="true" />
               </Button>
@@ -136,11 +136,11 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
           <button
             type="button"
             onClick={handleSearch}
-            className="flex w-full items-center gap-2 rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            className="flex w-full items-center gap-2 rounded-lg border border-border/60 bg-gray-100/40 dark:bg-slate-800 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-gray-100 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
           >
             <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span className="flex-1 truncate text-left">Search menu...</span>
-            <kbd className="hidden shrink-0 items-center gap-0.5 rounded border border-border/60 bg-background px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
+            <kbd className="hidden shrink-0 items-center gap-0.5 rounded border border-border/60 dark:bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground sm:flex">
               ⌘K
             </kbd>
           </button>
@@ -148,14 +148,14 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
       </SidebarHeader>
 
       {/* Navigation */}
-      <SidebarContent className="flex flex-col">
+      <SidebarContent className="flex flex-col bg-gray-100 dark:bg-slate-950">
         <ScrollArea className="flex-1 px-2 py-3">
           <SidebarNavItems groups={navGroups} />
         </ScrollArea>
       </SidebarContent>
 
       {/* Footer — user chip + logout */}
-      <SidebarFooter className="gap-2 border-t border-border/60 px-3 py-3">
+      <SidebarFooter className="bg-gray-100 dark:bg-slate-950 gap-2 border-t border-border/60 px-3 py-3">
         {!isCollapsed && (
           <div className="flex items-center gap-2.5 rounded-lg px-1 py-1.5">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary ring-1 ring-primary/20">

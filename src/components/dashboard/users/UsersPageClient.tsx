@@ -13,40 +13,40 @@ import {
   useUpdateUser,
   useDeleteUser,
   useUpdateUserStatus,
-} from "@/features/users/hooks"
+} from "@/features/users/hooks";
 import { UserFilters } from "@/components/dashboard/users/filters/user-filters";
 import { UsersTable } from "@/components/dashboard/users/table/users-table";
-import { UserStatsCards } from"@/components/dashboard/users/cards/user-stats-cards";
-import { getUserTableColumns } from"@/components/dashboard/users/table/user-table-columns";
+import { UserStatsCards } from "@/components/dashboard/users/cards/user-stats-cards";
+import { getUserTableColumns } from "@/components/dashboard/users/table/user-table-columns";
+import { UserGridView } from "@/components/dashboard/users/grid/user-grid-view";
+import { UserDetailsSheet } from "@/components/dashboard/users/user-details-sheet";
 import {
   CreateUserDialog,
   UpdateUserDialog,
   DeleteUserDialog,
   StatusChangeDialog,
 } from "@/components/dashboard/users/dialogs/user-dialogs";
-import type { CreateUserInput, UpdateUserInput } from "@/features/users/schemas/user.schema";
-import { UserGridView } from "@/components/dashboard/users/grid/user-grid-view";
+import type {
+  CreateUserInput,
+  UpdateUserInput,
+} from "@/features/users/schemas/user.schema";
 
 export function UsersPageClient() {
   const [view, setView] = useState<"table" | "grid">("table");
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
-  const [dialogState, setDialogState] = useState<{
-    createOpen: boolean;
-    updateOpen: boolean;
-    deleteOpen: boolean;
-    statusOpen: boolean;
-  }>({
+  const [dialogState, setDialogState] = useState({
     createOpen: false,
     updateOpen: false,
     deleteOpen: false,
     statusOpen: false,
+    detailsOpen: false,
   });
 
   const { filters, getQueryParams, ...filterMethods } = useUserFilters();
   const queryParams = getQueryParams();
 
-  const { data: response, isLoading, error } = useUsers(queryParams);
+  const { data: response, isLoading } = useUsers(queryParams);
   const users = response?.data || [];
   const stats = useUserStats(users);
 
@@ -57,26 +57,35 @@ export function UsersPageClient() {
 
   const pageCount = response?.meta?.totalPage || 1;
 
+  const handleViewDetails = useCallback((user: User) => {
+    setSelectedUser(user);
+    setDialogState((p) => ({ ...p, detailsOpen: true }));
+  }, []);
+
+  const handleEdit = useCallback((user: User) => {
+    setSelectedUser(user);
+    setDialogState((p) => ({ ...p, updateOpen: true, detailsOpen: false }));
+  }, []);
+
+  const handleDeleteRequest = useCallback((user: User) => {
+    setSelectedUser(user);
+    setDialogState((p) => ({ ...p, deleteOpen: true, detailsOpen: false }));
+  }, []);
+
+  const handleStatusRequest = useCallback((user: User) => {
+    setSelectedUser(user);
+    setDialogState((p) => ({ ...p, statusOpen: true, detailsOpen: false }));
+  }, []);
+
   const columns = useMemo(
     () =>
       getUserTableColumns({
-        onEdit: (user) => {
-          setSelectedUser(user);
-          setDialogState((p) => ({ ...p, updateOpen: true }));
-        },
-        onDelete: (user) => {
-          setSelectedUser(user);
-          setDialogState((p) => ({ ...p, deleteOpen: true }));
-        },
-        onViewDetails: (user) => {
-          setSelectedUser(user);
-        },
-        onStatusChange: (user) => {
-          setSelectedUser(user);
-          setDialogState((p) => ({ ...p, statusOpen: true }));
-        },
+        onEdit: handleEdit,
+        onDelete: handleDeleteRequest,
+        onViewDetails: handleViewDetails,
+        onStatusChange: handleStatusRequest,
       }),
-    [],
+    [handleEdit, handleDeleteRequest, handleViewDetails, handleStatusRequest],
   );
 
   const handleCreateUser = useCallback(
@@ -114,13 +123,14 @@ export function UsersPageClient() {
   );
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="bg-gray-100 dark:bg-slate-950 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Users</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage team members and their permissions
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--foreground)]">
+            Team Members
+          </h1>
+          <p className="mt-1 text-sm text-[var(--muted-fg)]">
+            Manage who has access to DotSkills Panel and what they can do.
           </p>
         </div>
         <Button
@@ -128,14 +138,12 @@ export function UsersPageClient() {
           className="gap-2"
         >
           <Plus className="h-4 w-4" />
-          Add User
+          Add user
         </Button>
       </div>
 
-      {/* Stats Cards */}
       <UserStatsCards stats={stats} isLoading={isLoading} />
 
-      {/* Filters */}
       <UserFilters
         filters={filters}
         onSearch={filterMethods.setSearch}
@@ -146,7 +154,6 @@ export function UsersPageClient() {
         onClear={filterMethods.clearFilters}
       />
 
-      {/* View Tabs */}
       <Tabs value={view} onValueChange={(value) => setView(value as "table" | "grid")}>
         <TabsList className="grid w-full max-w-xs grid-cols-2">
           <TabsTrigger value="table" className="gap-2">
@@ -176,37 +183,33 @@ export function UsersPageClient() {
           <UserGridView
             users={users}
             isLoading={isLoading}
-            onEdit={(user) => {
-              setSelectedUser(user);
-              setDialogState((p) => ({ ...p, updateOpen: true }));
-            }}
-            onDelete={(user) => {
-              setSelectedUser(user);
-              setDialogState((p) => ({ ...p, deleteOpen: true }));
-            }}
-            onStatusChange={(user) => {
-              setSelectedUser(user);
-              setDialogState((p) => ({ ...p, statusOpen: true }));
-            }}
+            onEdit={handleEdit}
+            onDelete={handleDeleteRequest}
+            onStatusChange={handleStatusRequest}
+            onViewDetails={handleViewDetails}
           />
         </TabsContent>
       </Tabs>
 
-      {/* Dialogs */}
+      <UserDetailsSheet
+        user={selectedUser}
+        open={dialogState.detailsOpen}
+        onOpenChange={(open) => setDialogState((p) => ({ ...p, detailsOpen: open }))}
+        onEdit={handleEdit}
+        onDelete={handleDeleteRequest}
+        onStatusChange={handleStatusRequest}
+      />
+
       <CreateUserDialog
         open={dialogState.createOpen}
-        onOpenChange={(open) =>
-          setDialogState((p) => ({ ...p, createOpen: open }))
-        }
+        onOpenChange={(open) => setDialogState((p) => ({ ...p, createOpen: open }))}
         onSubmit={handleCreateUser}
         isLoading={createUserMutation.isPending}
       />
 
       <UpdateUserDialog
         open={dialogState.updateOpen}
-        onOpenChange={(open) =>
-          setDialogState((p) => ({ ...p, updateOpen: open }))
-        }
+        onOpenChange={(open) => setDialogState((p) => ({ ...p, updateOpen: open }))}
         user={selectedUser}
         onSubmit={handleUpdateUser}
         isLoading={updateUserMutation.isPending}
@@ -214,9 +217,7 @@ export function UsersPageClient() {
 
       <DeleteUserDialog
         open={dialogState.deleteOpen}
-        onOpenChange={(open) =>
-          setDialogState((p) => ({ ...p, deleteOpen: open }))
-        }
+        onOpenChange={(open) => setDialogState((p) => ({ ...p, deleteOpen: open }))}
         user={selectedUser}
         onConfirm={handleDeleteUser}
         isLoading={deleteUserMutation.isPending}
@@ -224,9 +225,7 @@ export function UsersPageClient() {
 
       <StatusChangeDialog
         open={dialogState.statusOpen}
-        onOpenChange={(open) =>
-          setDialogState((p) => ({ ...p, statusOpen: open }))
-        }
+        onOpenChange={(open) => setDialogState((p) => ({ ...p, statusOpen: open }))}
         user={selectedUser}
         currentStatus={selectedUser?.status}
         onStatusChange={handleStatusChange}

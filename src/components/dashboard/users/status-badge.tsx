@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { getStatusStyle } from "@/lib/user-badges";
+import { getStatusStyle } from "@/features/users/utils/user-badges";
 
 export function StatusBadge({
   status,

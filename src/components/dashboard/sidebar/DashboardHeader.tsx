@@ -6,13 +6,13 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { HeaderBreadcrumbs } from "../header/HeaderBreadcrumbs";
 import { HeaderNotifications } from "./HeaderNotifications";
 import { HeaderSearch } from "./HeaderSearch";
-import { ThemeToggle } from "../header/ThemeToggle";
 import { UserMenu } from "./UserMenu";
+import ThemeToggle from "../header/ThemeToggle";
 
 export function DashboardHeader() {
   return (
     <header
-      className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl supports-backdrop-filter:bg-background/60"
+      className="bg-gray-100 dark:bg-slate-950 sticky top-0 z-40 w-full border-b border-border/60 backdrop-blur-xl supports-backdrop-filter:bg-background/60"
       role="banner"
     >
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6">

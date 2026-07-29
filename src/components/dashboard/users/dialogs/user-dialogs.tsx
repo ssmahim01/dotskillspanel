@@ -21,6 +21,7 @@ import { Loader2 } from "lucide-react";
 import type { User } from "@/types/user.types";
 import { UserForm } from "../forms/user-form";
 import type { CreateUserInput, UpdateUserInput } from "@/features/users/schemas/user.schema";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface CreateUserDialogProps {
   open: boolean;
@@ -37,20 +38,23 @@ export function CreateUserDialog({
 }: CreateUserDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-gray-100 dark:bg-slate-950 max-w-2xl">
         <DialogHeader>
           <DialogTitle>Create New User</DialogTitle>
           <DialogDescription>
             Fill in the form below to create a new user account.
           </DialogDescription>
         </DialogHeader>
-        <UserForm
+        <ScrollArea className="max-h-[85vh] pr-2">
+          <UserForm
           onSubmit={async (data) => {
             await onSubmit(data as CreateUserInput);
             onOpenChange(false);
           }}
           isLoading={isLoading}
         />
+        <ScrollBar orientation="vertical" />
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
@@ -73,7 +77,7 @@ export function UpdateUserDialog({
 }: UpdateUserDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-gray-100 dark:bg-slate-950 max-w-2xl">
         <DialogHeader>
           <DialogTitle>Edit User</DialogTitle>
           <DialogDescription>
@@ -81,7 +85,8 @@ export function UpdateUserDialog({
           </DialogDescription>
         </DialogHeader>
         {user && (
-          <UserForm
+          <ScrollArea className="max-h-[85vh] pr-2">
+            <UserForm
             user={user}
             onSubmit={async (data) => {
               await onSubmit(data as UpdateUserInput);
@@ -89,6 +94,8 @@ export function UpdateUserDialog({
             }}
             isLoading={isLoading}
           />
+          <ScrollBar orientation="vertical" />
+          </ScrollArea>
         )}
       </DialogContent>
     </Dialog>

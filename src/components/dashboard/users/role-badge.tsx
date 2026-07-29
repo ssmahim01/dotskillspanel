@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { getRoleStyle } from "@/lib/user-badges";
+import { getRoleStyle } from "@/features/users/utils/user-badges";
 
 export function RoleBadge({
   role,

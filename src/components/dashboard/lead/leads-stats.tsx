@@ -17,7 +17,7 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon, iconClassName, isLoading }: StatCardProps) {
   return (
-    <Card className="flex flex-col gap-3 p-4">
+    <Card className="bg-gray-100 dark:bg-slate-950 flex flex-col gap-3 p-4">
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">{label}</span>
         <div

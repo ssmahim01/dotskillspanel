@@ -123,8 +123,8 @@ export function LeadsTable({
   };
 
   return (
-    <div className="rounded-lg border bg-card">
-      <div className="flex items-center justify-end border-b px-4 py-2">
+    <div className="rounded-lg border-2 border-slate-100 dark:border-slate-900">
+      <div className="bg-gray-100 dark:bg-slate-950 flex items-center justify-end border-b px-4 py-2">
         <LeadsColumnVisibility table={table} />
       </div>
 
@@ -139,7 +139,7 @@ export function LeadsTable({
           onAddLead={onAddLead}
         />
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-gray-100 dark:bg-slate-950">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

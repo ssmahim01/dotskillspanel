@@ -80,7 +80,7 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
         {
           id: "team-management",
           label: "Team",
-          href: "/dashboard/user-management",
+          href: "/dashboard/admin/users",
           description: "Manage team members",
         },
         {
@@ -100,14 +100,14 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
       collapsible: true,
       items: [
         {
-          id: "orders-management",
-          label: "Orders",
-          href: "/dashboard/orders-management",
-        },
-        {
           id: "leads",
           label: "Leads",
           href: "/dashboard/leads",
+        },
+        {
+          id: "orders-management",
+          label: "Orders",
+          href: "/dashboard/orders-management",
         },
       ],
     },
@@ -144,6 +144,17 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
       collapsible: true,
       items: [
         {
+          id: "team-management",
+          label: "Team",
+          href: "/dashboard/admin/users",
+          description: "Manage team members",
+        },
+        {
+          id: "leads",
+          label: "Leads",
+          href: "/dashboard/leads",
+        },
+        {
           id: "product-management",
           label: "Products",
           href: "/dashboard/product-management",
@@ -169,7 +180,13 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
     },
     {
       label: "Operations",
+
       items: [
+        {
+          id: "leads",
+          label: "Leads",
+          href: "/dashboard/leads",
+        },
         {
           id: "orders-management",
           label: "Orders",
@@ -217,6 +234,11 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
       label: "Marketing",
       items: [
         {
+          id: "leads",
+          label: "Leads",
+          href: "/dashboard/leads",
+        },
+        {
           id: "dashboard",
           label: "Dashboard",
           href: "/dashboard",
@@ -237,6 +259,11 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           id: "dashboard",
           label: "Dashboard",
           href: "/dashboard",
+        },
+        {
+          id: "leads",
+          label: "Leads",
+          href: "/dashboard/leads",
         },
         {
           id: "my-orders",
