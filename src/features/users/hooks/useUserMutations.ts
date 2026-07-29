@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +21,7 @@ export const useCreateUser = () => {
       toast.success("User created successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Failed to create user");
+      toast.error(error.response?.data || "Failed to create user");
     },
   });
 };

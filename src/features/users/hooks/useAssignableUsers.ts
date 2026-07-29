@@ -16,7 +16,7 @@ export const useAssignableUsers = () => {
     queryKey: ["users", "assignable"],
     queryFn: () =>
       apiClient.get<ApiResponse<IUserSummary[]>>(
-        "/users?fields=firstName,lastName,email,designation&limit=100&sort=firstName",
+        "/user?fields=firstName,lastName,email,designation&limit=100&sort=firstName",
       ),
     staleTime: 1000 * 60 * 10,
   });

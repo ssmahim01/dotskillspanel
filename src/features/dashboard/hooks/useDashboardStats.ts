@@ -2,11 +2,8 @@
 
 import { useUsers } from "@/features/users/hooks/useUsers";
 import { useLeads } from "@/features/leads/hooks/useLeads";
+import { LeadStatus } from "@/types/lead";
 
-/**
- * Aggregates dashboard statistics from multiple features
- * Uses existing endpoints with minimal queries (limit=1) for metadata
- */
 export const useDashboardStats = () => {
   // Fetch user stats
   const usersTotal = useUsers({ limit: 1, page: 1 });
@@ -15,7 +12,7 @@ export const useDashboardStats = () => {
   
   // Fetch lead stats
   const leadsTotal = useLeads({ limit: 1, page: 1 });
-  const leadsNew = useLeads({ limit: 1, page: 1, status: "NEW" });
+  const leadsNew = useLeads({ limit: 1, page: 1, status: LeadStatus.NEW });
   
   const isLoading = usersTotal.isLoading || leadsTotal.isLoading;
   

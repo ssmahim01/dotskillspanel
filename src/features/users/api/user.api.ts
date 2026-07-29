@@ -44,7 +44,7 @@ export interface UpdateUserStatusPayload {
   status: "ACTIVE" | "INACTIVE" | "SUSPENDED";
 }
 
-const BASE_URL = "/users";
+const BASE_URL = "/user";
 
 const buildQuery = (params?: GetUsersParams) => {
   if (!params) return "";

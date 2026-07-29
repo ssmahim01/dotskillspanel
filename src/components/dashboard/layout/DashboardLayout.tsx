@@ -2,9 +2,9 @@
 
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { PremiumSidebar } from "../sidebar/PremiumSidebar";
-import { DashboardHeader } from "../header/DashboardHeader";
 import DashboardSkeleton from "../DashboardSkeleton";
 import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
+import { DashboardHeader } from "../sidebar/DashboardHeader";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

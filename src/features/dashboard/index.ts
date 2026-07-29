@@ -1,9 +1,0 @@
-export { DashboardOverviewClient } from "./DashboardOverviewClient";
-export { useDashboardStats } from "./hooks/useDashboardStats";
-export { StatCardWithChart } from "./components/stat-card-with-chart";
-export { RevenueChart } from "./components/revenue-chart";
-export { UserRoleChart } from "./components/user-role-chart";
-export { UserGrowthChart } from "./components/user-growth-chart";
-export { RecentUsersTable } from "./components/recent-users-table";
-export { RecentActivities } from "./components/recent-activities";
-export { TopCourses } from "./components/top-courses";

@@ -2,6 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -11,9 +18,8 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
-import { NavGroup, NavItem } from "@/lib/dashboard-config";
+import { cn } from "@/lib/utils";
+import type { NavGroup } from "@/lib/dashboard-config";
 
 interface SidebarNavItemsProps {
   groups: NavGroup[];
@@ -21,24 +27,22 @@ interface SidebarNavItemsProps {
 
 export function SidebarNavItems({ groups }: SidebarNavItemsProps) {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile, state } = useSidebar();
+  const isCollapsed = state === "collapsed";
 
   const handleNavClick = () => {
-    if (isMobile) {
-      setOpenMobile(false);
-    }
+    if (isMobile) setOpenMobile(false);
   };
 
-  const isItemActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + "/");
-  };
+  const isItemActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {groups.map((group, groupIdx) => (
         <div key={`group-${groupIdx}`}>
-          {group.label && (
-            <p className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+          {group.label && !isCollapsed && (
+            <p className="px-3 pb-1.5 pt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
               {group.label}
             </p>
           )}
@@ -53,24 +57,35 @@ export function SidebarNavItems({ groups }: SidebarNavItemsProps) {
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
-                      className="hover:bg-accent/50 transition-colors"
+                      tooltip={item.label}
+                      className={cn(
+                        "gap-2.5 rounded-lg font-normal text-sidebar-foreground/80 transition-colors",
+                        "hover:bg-primary/8 hover:text-sidebar-foreground",
+                        isActive &&
+                          "bg-primary font-medium text-primary-foreground shadow-sm hover:bg-primary hover:text-primary-foreground",
+                      )}
                     >
-                      <Link
-                        href={item.href}
-                        onClick={handleNavClick}
-                        title={item.description}
-                        className={`${
-                          isActive
-                            ? "bg-accent text-accent-foreground font-medium"
-                            : ""
-                        }`}
-                      >
+                      <Link href={item.href} onClick={handleNavClick} title={item.description}>
                         {item.icon && (
-                          <span className="flex-shrink-0">{item.icon}</span>
+                          <span
+                            className={cn(
+                              "shrink-0",
+                              isActive ? "text-primary-foreground" : "text-muted-foreground",
+                            )}
+                          >
+                            {item.icon}
+                          </span>
                         )}
-                        <span className="flex-1">{item.label}</span>
+                        <span className="flex-1 truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="ml-auto inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                          <span
+                            className={cn(
+                              "ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold",
+                              isActive
+                                ? "bg-white/20 text-white"
+                                : "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300",
+                            )}
+                          >
                             {item.badge}
                           </span>
                         )}
@@ -89,27 +104,28 @@ export function SidebarNavItems({ groups }: SidebarNavItemsProps) {
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
-                        className={`hover:bg-accent/50 transition-colors ${
-                          isActive ? "bg-accent/50" : ""
-                        }`}
+                        tooltip={item.label}
+                        className={cn(
+                          "gap-2.5 rounded-lg font-normal text-sidebar-foreground/80 transition-colors",
+                          "hover:bg-primary/8 hover:text-sidebar-foreground",
+                          isActive && "bg-primary/10 text-sidebar-foreground",
+                        )}
                       >
                         {item.icon && (
-                          <span className="flex-shrink-0">{item.icon}</span>
+                          <span className="shrink-0 text-muted-foreground">{item.icon}</span>
                         )}
-                        <span className="flex-1">{item.label}</span>
-                        <ChevronDown className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        <span className="flex-1 truncate">{item.label}</span>
+                        <ChevronDown className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]/collapsible:rotate-180" />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
 
                     <CollapsibleContent>
-                      <SidebarMenuSub>
-                        {/* Placeholder for sub-items */}
+                      <SidebarMenuSub className="border-sidebar-border/60">
+                        {/* TODO: map item.children once NavItem gains a children field —
+                            kept as a single link for now to match the current type. */}
                         <SidebarMenuSubItem>
-                          <SidebarMenuSubButton asChild>
-                            <Link
-                              href={item.href}
-                              onClick={handleNavClick}
-                            >
+                          <SidebarMenuSubButton asChild isActive={isActive}>
+                            <Link href={item.href} onClick={handleNavClick}>
                               {item.label}
                             </Link>
                           </SidebarMenuSubButton>
