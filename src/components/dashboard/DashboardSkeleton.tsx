@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function DashboardSkeleton() {
   return (
     <div className="flex h-screen">
-      <aside className="w-64 border-r bg-gray-50 p-4 flex flex-col gap-4">
+      <aside className="w-64 border-r bg-gray-50 dark:bg-slate-900 p-4 flex flex-col gap-4">
         <Skeleton className="h-8 w-40 mx-auto" /> 
         <div className="flex flex-col gap-3 mt-4">
           <Skeleton className="h-5 w-32" />

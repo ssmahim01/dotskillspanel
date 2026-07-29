@@ -57,7 +57,7 @@ export function RecentUsersTable({ users = [], isLoading = false }: RecentUsersT
   const displayUsers = users.slice(0, 4);
 
   return (
-    <Card>
+    <Card className="bg-gray-100 dark:bg-slate-950">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <div>
           <CardTitle>Recent Users</CardTitle>

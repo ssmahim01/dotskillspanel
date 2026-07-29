@@ -96,7 +96,7 @@ export function RecentActivities({ activities = [], isLoading = false }: RecentA
   const displayActivities = activities.length > 0 ? activities.slice(0, 4) : defaultActivities;
 
   return (
-    <Card>
+    <Card className="bg-gray-100 dark:bg-slate-950">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <div>
           <CardTitle>Recent Activities</CardTitle>

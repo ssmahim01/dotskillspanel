@@ -62,7 +62,7 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
     return (
       <Sidebar {...props}>
         <SidebarHeader className="border-b border-border/50 px-4 py-4">
-          <div className="h-10 w-full animate-pulse rounded-lg bg-gray-100" />
+          <div className="h-10 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-slate-800" />
         </SidebarHeader>
         <SidebarContent className="px-3 py-4">
           <div className="space-y-2.5">

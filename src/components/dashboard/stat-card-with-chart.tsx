@@ -37,7 +37,7 @@ export function StatCardWithChart({
   const isTrendPositive = trend && trend >= 0;
   
   return (
-    <Card className="hover:shadow-lg transition-all duration-200 overflow-hidden">
+    <Card className="hover:shadow-lg bg-gray-100 dark:bg-slate-950 transition-all duration-200 overflow-hidden">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="space-y-1">
           <CardTitle className="text-sm font-medium text-muted-foreground">

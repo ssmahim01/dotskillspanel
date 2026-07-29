@@ -64,7 +64,7 @@ export function UserGrowthChart({
   ];
 
   return (
-    <Card>
+    <Card className="bg-gray-100 dark:bg-slate-950">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>

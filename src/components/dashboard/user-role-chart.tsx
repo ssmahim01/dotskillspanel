@@ -41,7 +41,7 @@ export function UserRoleChart({ data, isLoading = false }: UserRoleChartProps) {
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <Card>
+    <Card className="bg-gray-100 dark:bg-slate-950">
       <CardHeader>
         <CardTitle>Users by Role</CardTitle>
         <CardDescription>Distribution of user roles</CardDescription>

@@ -41,7 +41,7 @@ export function RevenueChart({ data = [], isLoading = false }: RevenueChartProps
   const chartData = data.length > 0 ? data : generateMockData();
 
   return (
-    <Card>
+    <Card className="bg-gray-100 dark:bg-slate-950">
       <CardHeader>
         <CardTitle>Revenue Overview</CardTitle>
         <CardDescription>Monthly revenue and expenses</CardDescription>

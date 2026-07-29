@@ -56,7 +56,7 @@ export function TopCourses({ courses, isLoading = false }: TopCoursesProps) {
   const displayCourses = courses || defaultCourses;
 
   return (
-    <Card>
+    <Card className="bg-gray-100 dark:bg-slate-950">
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <div>
           <CardTitle>Top Courses</CardTitle>
