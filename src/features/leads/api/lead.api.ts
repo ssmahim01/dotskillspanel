@@ -37,6 +37,13 @@ const buildQuery = (params?: LeadFilters) => {
   return query ? `?${query}` : "";
 };
 
+export interface ImportLeadsSummary {
+  total: number;
+  imported: number;
+  duplicates: number;
+  failed: number;
+}
+
 export const leadApi = {
 
   getLeads: (params?: LeadFilters) =>
@@ -53,6 +60,22 @@ export const leadApi = {
     apiClient.get<GetLeadResponse>(
       `${BASE_URL}/${id}`,
     ),
+
+  importLeads: (file: File) => {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    return apiClient.post<ApiResponse<ImportLeadsSummary>>(
+      `${BASE_URL}/import`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+  },
 
   createLead: (payload: CreateLeadPayload) =>
     apiClient.post<ApiResponse<ILead>>(

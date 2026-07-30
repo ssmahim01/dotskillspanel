@@ -19,6 +19,7 @@ import { LeadFormDialog } from "./lead-form-dialog";
 import { LeadAssignDialog } from "./lead-assign-dialog";
 import { LeadConvertDialog } from "./lead-convert-dialog";
 import { LeadDetailsDrawer } from "./lead-details-drawer";
+import { LeadImportDialog } from "./lead-import-dialog";
 import type { ILead } from "@/types/lead";
 
 export function LeadsPageClient() {
@@ -62,6 +63,9 @@ export function LeadsPageClient() {
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
   const [isBulkAssigning, setIsBulkAssigning] = useState(false);
+
+  // Lead import dialog — state only, all import logic lives in LeadImportDialog.
+  const [importOpen, setImportOpen] = useState(false);
 
   const handleOpenDetails = useCallback((lead: ILead) => {
     setDetailsLeadId(lead._id);
@@ -153,6 +157,7 @@ export function LeadsPageClient() {
           onSearchChange={setSearchTerm}
           onUpdateFilters={updateFilters}
           onExport={() => exportLeadsToCsv(leads)}
+          onImport={() => setImportOpen(true)}
           onAddLead={handleAddLead}
         />
 
@@ -224,6 +229,8 @@ export function LeadsPageClient() {
         open={convertOpen}
         onOpenChange={setConvertOpen}
       />
+
+      <LeadImportDialog open={importOpen} onOpenChange={setImportOpen} />
 
       <ConfirmDialog
         open={deleteOpen}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Plus, Search, SlidersHorizontal } from "lucide-react";
+import { Download, Plus, Search, SlidersHorizontal, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,7 @@ interface LeadsToolbarProps {
   onSearchChange: (value: string) => void;
   onUpdateFilters: (patch: Partial<LeadFilters>) => void;
   onExport: () => void;
+  onImport: () => void;
   onAddLead: () => void;
 }
 
@@ -38,6 +39,7 @@ export function LeadsToolbar({
   onSearchChange,
   onUpdateFilters,
   onExport,
+  onImport,
   onAddLead,
 }: LeadsToolbarProps) {
   const [search, setSearch] = useState(filters.searchTerm ?? "");
@@ -139,6 +141,10 @@ export function LeadsToolbar({
       </div>
 
       <div className="flex items-center gap-2">
+        <Button variant="outline" onClick={onImport}>
+          <Upload className="h-4 w-4" />
+          Import
+        </Button>
         <Button variant="outline" onClick={onExport}>
           <Download className="h-4 w-4" />
           Export

@@ -15,6 +15,16 @@ export const useLeadMutations = () => {
     ]);
   };
 
+  const importLeads = useMutation({
+  mutationFn: leadApi.importLeads,
+
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: leadKeys.all,
+    });
+  },
+});
+
   const createLead = useMutation({
     mutationFn: leadApi.createLead,
     onSuccess: () => {
@@ -141,6 +151,7 @@ export const useLeadMutations = () => {
     createLead,
     updateLead,
     updateLeadStatus,
+    importLeads,
     assignLead,
     convertLead,
     addNote,
