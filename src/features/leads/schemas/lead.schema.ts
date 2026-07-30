@@ -94,6 +94,7 @@ export const createLeadFormSchema = z.object({
   budget: z.coerce.number().min(0).optional(),
   timeline: z.string().trim().max(100).optional().or(z.literal("")),
   technologies: z.array(z.string().trim()).optional(),
+  attachments: z.array(z.string().trim()).optional(),
   services: z.array(z.string().trim()).optional(),
 });
 

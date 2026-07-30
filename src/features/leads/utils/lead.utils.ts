@@ -1,4 +1,4 @@
-import { LeadPriority, LeadSource, LeadStatus } from "@/types/lead";
+import { AttachmentType, LeadPriority, LeadSource, LeadStatus } from "@/types/lead";
 
 export const getLeadStatusColor = (status: LeadStatus) => {
   switch (status) {
@@ -22,6 +22,43 @@ export const getLeadStatusColor = (status: LeadStatus) => {
       return "secondary";
   }
 };
+
+export function formatRelativeTime(dateString?: string): string {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const diffSec = Math.round((Date.now() - date.getTime()) / 1000);
+  const diffMin = Math.round(diffSec / 60);
+  const diffHour = Math.round(diffMin / 60);
+  const diffDay = Math.round(diffHour / 24);
+
+  if (diffSec < 60) return "just now";
+  if (diffMin < 60) return `${diffMin}m ago`;
+  if (diffHour < 24) return `${diffHour}h ago`;
+  if (diffDay < 7) return `${diffDay}d ago`;
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export function inferAttachmentType(file: File): AttachmentType {
+  if (file.type.startsWith("image/")) return AttachmentType.IMAGE;
+  if (file.type === "application/pdf") return AttachmentType.PDF;
+  if (
+    file.type.includes("spreadsheet") ||
+    file.type === "text/csv" ||
+    /\.(xlsx|xls|csv)$/i.test(file.name)
+  )
+    return AttachmentType.SPREADSHEET;
+  if (
+    file.type.includes("word") ||
+    file.type === "application/msword" ||
+    /\.(docx?|rtf)$/i.test(file.name)
+  )
+    return AttachmentType.DOCUMENT;
+  return AttachmentType.OTHER;
+}
 
 export const getPriorityColor = (priority: LeadPriority) => {
   switch (priority) {

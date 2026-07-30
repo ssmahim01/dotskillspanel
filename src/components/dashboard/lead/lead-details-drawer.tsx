@@ -3,11 +3,14 @@
 import { useState } from "react";
 import {
   ArrowRightLeft,
-  Clock,
+  Briefcase,
   History,
+  Mail,
   MessageSquare,
   Paperclip,
   Pencil,
+  Phone,
+  Sparkles,
   User,
   UserPlus,
 } from "lucide-react";
@@ -21,6 +24,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tabs,
@@ -42,10 +46,12 @@ import {
   getLeadFullName,
 } from "@/features/leads/utils/lead.utils";
 import { LeadAttachmentForm } from "./lead-attachment-form";
+import { LeadAttachmentGallery } from "./lead-attachment-gallery";
 import { LeadNoteForm } from "./lead-note-form";
+import { LeadNotesList } from "./LeadNoteList";
 import { LeadTimeline } from "./lead-timeline";
-import { isImageUrl } from "@/features/leads/utils/lead.utils";
 import type { ILead } from "@/types/lead";
+import { cn } from "@/lib/utils";
 
 interface LeadDetailsDrawerProps {
   leadId: string | null;
@@ -70,10 +76,10 @@ export function LeadDetailsDrawer({
   });
 
   const lead = data?.data;
-  
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full gap-0 overflow-y-auto sm:max-w-md">
+      <SheetContent className="w-full gap-0 overflow-y-auto p-0 sm:max-w-md">
         {isLoading || !lead ? (
           <div className="flex flex-col gap-4 p-6">
             <Skeleton className="h-10 w-40" />
@@ -82,42 +88,61 @@ export function LeadDetailsDrawer({
           </div>
         ) : (
           <>
-            <SheetHeader className="flex-row items-start justify-between gap-2 space-y-0 border-b pb-4">
+            <SheetHeader className="flex-row items-start justify-between gap-2 space-y-0 border-b bg-linear-to-br from-primary/5 via-transparent to-transparent px-4 pb-4 pt-5">
               <div className="flex items-center gap-3">
-                <Avatar className="h-11 w-11">
-                  <AvatarFallback>
+                <Avatar className="h-12 w-12 ring-2 ring-primary/20">
+                  <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                     {getInitials(lead.firstName, lead.lastName)}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <SheetTitle className="flex items-center gap-2">
-                    {getLeadFullName(lead)}
-                    <Badge variant="secondary" className="text-[10px]">
+                <div className="min-w-0">
+                  <SheetTitle className="flex flex-wrap items-center gap-2 text-base">
+                    <span className="truncate">{getLeadFullName(lead)}</span>
+                    <Badge className={cn("text-[10px]", LEAD_STATUS_CONFIG[lead.status].className)}>
                       {LEAD_STATUS_CONFIG[lead.status].label}
                     </Badge>
                   </SheetTitle>
-                  <p className="text-sm text-muted-foreground">{lead.email}</p>
+                  {lead.company && (
+                    <p className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Briefcase className="h-3.5 w-3.5" />
+                      {lead.company}
+                    </p>
+                  )}
                 </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => onEdit(lead)}>
-                <Pencil className="h-4 w-4" />
+              {/* <Button variant="outline" size="sm" onClick={() => onEdit(lead)} className="shrink-0">
+                <Pencil className="h-3.5 w-3.5" />
                 Edit
-              </Button>
+              </Button> */}
             </SheetHeader>
 
             <Tabs value={tab} onValueChange={setTab} className="flex-1">
-              <TabsList className="w-full justify-start gap-1 rounded-none border-b bg-transparent px-4">
-                <TabsTrigger value="info">
+              <TabsList className="w-full justify-start gap-1 rounded-none border-b bg-muted/30 px-4">
+                <TabsTrigger value="info" className="gap-1.5 data-[state=active]:text-primary">
                   <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">Info</span>
                 </TabsTrigger>
-                <TabsTrigger value="notes">
+                <TabsTrigger value="notes" className="gap-1.5 data-[state=active]:text-amber-600">
                   <MessageSquare className="h-4 w-4" />
+                  <span className="hidden sm:inline">Notes</span>
+                  {lead.notes.length > 0 && (
+                    <Badge variant="secondary" className="h-4 min-w-4 px-1 text-[10px]">
+                      {lead.notes.length}
+                    </Badge>
+                  )}
                 </TabsTrigger>
-                <TabsTrigger value="attachments">
+                <TabsTrigger value="attachments" className="gap-1.5 data-[state=active]:text-violet-600">
                   <Paperclip className="h-4 w-4" />
+                  <span className="hidden sm:inline">Files</span>
+                  {lead?.attachments?.length > 0 && (
+                    <Badge variant="secondary" className="h-4 min-w-4 px-1 text-[10px]">
+                      {lead?.attachments?.length}
+                    </Badge>
+                  )}
                 </TabsTrigger>
-                <TabsTrigger value="timeline">
+                <TabsTrigger value="timeline" className="gap-1.5 data-[state=active]:text-emerald-600">
                   <History className="h-4 w-4" />
+                  <span className="hidden sm:inline">Timeline</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -128,23 +153,48 @@ export function LeadDetailsDrawer({
                     {lead.assignedTo ? "Reassign" : "Assign"}
                   </Button>
                   {canConvertLead(lead) && (
-                    <Button size="sm" onClick={() => onConvert(lead)}>
+                    <Button
+                      size="sm"
+                      onClick={() => onConvert(lead)}
+                      className="bg-emerald-600 hover:bg-emerald-700"
+                    >
                       <ArrowRightLeft className="h-4 w-4" />
                       Convert to Client
                     </Button>
                   )}
                 </div>
 
-                <section className="flex flex-col gap-3">
-                  <h3 className="text-sm font-semibold">Lead Information</h3>
+                <section className="flex flex-col gap-3 rounded-xl border bg-card p-4">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold">
+                    <User className="h-4 w-4 text-primary" />
+                    Lead Information
+                  </h3>
+                  <Separator />
                   <InfoRow label="Full Name" value={getLeadFullName(lead)} />
-                  <InfoRow label="Email" value={lead.email || "-"} />
-                  <InfoRow label="Phone" value={lead.phone} />
-                  <InfoRow label="Company" value={lead.company || "-"} />
                   <InfoRow
-                    label="Source"
-                    value={LEAD_SOURCE_CONFIG[lead.source].label}
+                    label="Email"
+                    value={
+                      lead.email ? (
+                        <span className="flex items-center gap-1">
+                          <Mail className="h-3.5 w-3.5 text-muted-foreground" />
+                          {lead.email}
+                        </span>
+                      ) : (
+                        "-"
+                      )
+                    }
                   />
+                  <InfoRow
+                    label="Phone"
+                    value={
+                      <span className="flex items-center gap-1">
+                        <Phone className="h-3.5 w-3.5 text-muted-foreground" />
+                        {lead.phone}
+                      </span>
+                    }
+                  />
+                  <InfoRow label="Company" value={lead.company || "-"} />
+                  <InfoRow label="Source" value={LEAD_SOURCE_CONFIG[lead.source].label} />
                   <InfoRow
                     label="Status"
                     value={
@@ -163,23 +213,29 @@ export function LeadDetailsDrawer({
                   />
                   <InfoRow
                     label="Assigned To"
-                    value={
-                      lead.assignedTo ? getLeadFullName(lead.assignedTo) : "Unassigned"
-                    }
+                    value={lead.assignedTo ? getLeadFullName(lead.assignedTo) : "Unassigned"}
                   />
                   <InfoRow label="Created At" value={formatDateTime(lead.createdAt)} />
                   <InfoRow label="Last Updated" value={formatDateTime(lead.updatedAt)} />
                   {lead.estimatedValue ? (
                     <InfoRow
                       label="Estimated Value"
-                      value={formatCurrency(lead.estimatedValue)}
+                      value={
+                        <span className="font-semibold text-emerald-600">
+                          {formatCurrency(lead.estimatedValue)}
+                        </span>
+                      }
                     />
                   ) : null}
                 </section>
 
                 {lead.requirementDescription && (
-                  <section className="flex flex-col gap-2">
-                    <h3 className="text-sm font-semibold">Requirement</h3>
+                  <section className="flex flex-col gap-2 rounded-xl border bg-card p-4">
+                    <h3 className="flex items-center gap-2 text-sm font-semibold">
+                      <Sparkles className="h-4 w-4 text-amber-500" />
+                      Requirement
+                    </h3>
+                    <Separator />
                     <p className="text-sm text-muted-foreground">
                       {lead.requirementDescription}
                     </p>
@@ -202,69 +258,12 @@ export function LeadDetailsDrawer({
 
               <TabsContent value="notes" className="flex flex-col gap-4 p-4">
                 <LeadNoteForm leadId={lead._id} />
-                <div className="flex flex-col gap-3">
-                  {lead.notes.length === 0 ? (
-                    <p className="py-6 text-center text-sm text-muted-foreground">
-                      No notes yet.
-                    </p>
-                  ) : (
-                    [...lead.notes]
-                      .sort(
-                        (a, b) =>
-                          new Date(b.createdAt ?? 0).getTime() -
-                          new Date(a.createdAt ?? 0).getTime(),
-                      )
-                      .map((note) => (
-                        <div key={note._id} className="rounded-lg border p-3">
-                          <p className="text-sm">{note.message}</p>
-                          <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            {formatDateTime(note.createdAt)}
-                            {note.createdBy && (
-                              <span>&middot; {getLeadFullName(note.createdBy)}</span>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                  )}
-                </div>
+                <LeadNotesList notes={lead.notes} />
               </TabsContent>
 
               <TabsContent value="attachments" className="flex flex-col gap-4 p-4">
                 <LeadAttachmentForm leadId={lead._id} />
-                <div className="flex flex-col gap-2">
-                  {lead.attachments.length === 0 ? (
-                    <p className="py-6 text-center text-sm text-muted-foreground">
-                      No attachments yet.
-                    </p>
-                  ) : (
-                    lead.attachments.map((attachment) => (
-                      <a
-                        key={attachment._id}
-                        href={attachment.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-3 rounded-lg border p-3 hover:bg-accent"
-                      >
-                        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-red-100 text-red-600 dark:bg-red-900/30">
-                          {isImageUrl(attachment.url) ? (
-                            <Paperclip className="h-4 w-4" />
-                          ) : (
-                            <Paperclip className="h-4 w-4" />
-                          )}
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium">
-                            {attachment.title}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {formatDateTime(attachment.uploadedAt)}
-                          </span>
-                        </div>
-                      </a>
-                    ))
-                  )}
-                </div>
+                <LeadAttachmentGallery attachments={lead.attachments} />
               </TabsContent>
 
               <TabsContent value="timeline" className="p-4">

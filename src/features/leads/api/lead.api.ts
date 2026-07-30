@@ -125,14 +125,14 @@ export const leadApi = {
       payload,
     ),
 
-  convertLead: (
-    id: string,
-    payload?: ConvertLeadPayload,
-  ) =>
-    apiClient.patch<ApiResponse<ILead>>(
-      `${BASE_URL}/${id}/convert`,
-      payload,
-    ),
+convertLead: (
+  id: string,
+  payload?: ConvertLeadPayload,
+) =>
+  apiClient.patch(
+    `${BASE_URL}/${id}/convert`,
+    payload ?? {},
+  ),
 
   addNote: (
     id: string,

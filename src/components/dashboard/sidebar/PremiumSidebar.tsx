@@ -5,7 +5,7 @@ import Link from "next/link";
 import { LogOut, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +14,11 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 import { navigationConfig } from "@/lib/dashboard-config";
 import type { UserRole } from "@/lib/permissions";
@@ -34,7 +38,10 @@ function openCommandMenu() {
   window.dispatchEvent(new CustomEvent("dotskills:open-command-menu"));
 }
 
-export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps) {
+export function PremiumSidebar({
+  onSearchClick,
+  ...props
+}: PremiumSidebarProps) {
   const { data: user, isLoading } = useCurrentUser();
   const { isMobile, setOpenMobile, state } = useSidebar();
   const router = useRouter();
@@ -67,7 +74,10 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
         <SidebarContent className="px-3 py-4">
           <div className="space-y-2.5">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-9 animate-pulse rounded-lg bg-gray-100" />
+              <div
+                key={i}
+                className="h-9 animate-pulse rounded-lg bg-gray-100"
+              />
             ))}
           </div>
         </SidebarContent>
@@ -79,7 +89,9 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
     return (
       <Sidebar {...props}>
         <SidebarHeader className="px-4 py-4">
-          <p className="text-center text-sm text-destructive">Failed to load sidebar</p>
+          <p className="text-center text-sm text-destructive">
+            Failed to load sidebar
+          </p>
         </SidebarHeader>
       </Sidebar>
     );
@@ -87,13 +99,18 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
 
   const userRole = (user.role as UserRole) || "STAFF";
   const navGroups = navigationConfig[userRole] || navigationConfig.STAFF;
-  const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ") || "User";
-  const initials = `${user.firstName?.charAt(0) ?? ""}${user.lastName?.charAt(0) ?? ""}`.toUpperCase();
+  const fullName =
+    [user.firstName, user.lastName].filter(Boolean).join(" ") || "User";
+  const initials =
+    `${user.firstName?.charAt(0) ?? ""}${user.lastName?.charAt(0) ?? ""}`.toUpperCase();
 
   return (
     <Sidebar
       {...props}
-      className={cn("border-r border-border/60 bg-gray-100 dark:bg-slate-950", props.className)}
+      className={cn(
+        "border-r border-border/60 bg-gray-100 dark:bg-slate-950",
+        props.className,
+      )}
     >
       {/* Brand */}
       <SidebarHeader className="gap-3 border-b border-border/60 bg-gray-100 dark:bg-slate-950 px-3 py-4">
@@ -113,7 +130,9 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
               <span className="text-sm font-semibold tracking-tight text-sidebar-foreground">
                 DotSkills
               </span>
-              <span className="text-[11px] font-medium text-muted-foreground">Panel</span>
+              <span className="text-[11px] font-medium text-muted-foreground">
+                Panel
+              </span>
             </div>
           )}
         </Link>
@@ -149,20 +168,23 @@ export function PremiumSidebar({ onSearchClick, ...props }: PremiumSidebarProps)
 
       {/* Navigation */}
       <SidebarContent className="flex flex-col bg-gray-100 dark:bg-slate-950">
-        <ScrollArea className="flex-1 px-2 py-3">
+        <ScrollArea className="flex-1 px-2 py-3 max-h-[70vh]">
           <SidebarNavItems groups={navGroups} />
+          <ScrollBar orientation="vertical" />
         </ScrollArea>
       </SidebarContent>
 
       {/* Footer — user chip + logout */}
-      <SidebarFooter className="bg-gray-100 dark:bg-slate-950 gap-2 border-t border-border/60 px-3 py-3">
+      <SidebarFooter className="z-100 bg-gray-100 dark:bg-slate-950 gap-2 border-t border-border/60 px-3 py-3">
         {!isCollapsed && (
           <div className="flex items-center gap-2.5 rounded-lg px-1 py-1.5">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary ring-1 ring-primary/20">
               {initials || "U"}
             </span>
             <div className="min-w-0 flex-1 leading-none">
-              <p className="truncate text-sm font-medium text-sidebar-foreground">{fullName}</p>
+              <p className="truncate text-sm font-medium text-sidebar-foreground">
+                {fullName}
+              </p>
               <p className="truncate text-xs text-muted-foreground">
                 {user.designation || userRole}
               </p>

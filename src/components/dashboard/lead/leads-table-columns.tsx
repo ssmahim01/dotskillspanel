@@ -31,6 +31,7 @@ const SOURCE_ICONS: Record<LeadSource, React.ReactNode> = {
 interface LeadsTableColumnsOptions {
   onOpenDetails: (lead: ILead) => void;
   onEdit: (lead: ILead) => void;
+   onUpdateStatus: (lead: ILead) => void;
   onAssign: (lead: ILead) => void;
   onConvert: (lead: ILead) => void;
   onDelete: (lead: ILead) => void;
@@ -39,6 +40,7 @@ interface LeadsTableColumnsOptions {
 export function getLeadsTableColumns({
   onOpenDetails,
   onEdit,
+  onUpdateStatus,
   onAssign,
   onConvert,
   onDelete,
@@ -178,6 +180,7 @@ export function getLeadsTableColumns({
           onOpenDetails={onOpenDetails}
           onEdit={onEdit}
           onAssign={onAssign}
+           onUpdateStatus={onUpdateStatus}
           onConvert={onConvert}
           onDelete={onDelete}
         />

@@ -2,9 +2,11 @@
 
 import {
   ArrowRightLeft,
+  Check,
   Eye,
   MoreHorizontal,
   Pencil,
+  RefreshCw,
   Trash2,
   UserPlus,
 } from "lucide-react";
@@ -15,10 +17,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { canConvertLead } from "@/features/leads/utils/lead.utils";
-import type { ILead } from "@/types/lead";
+import type { ILead, LeadStatus } from "@/types/lead";
+
+import { LEAD_STATUS_OPTIONS } from "@/features/leads/constants/lead.constant";
 
 interface LeadRowActionsProps {
   lead: ILead;
@@ -27,6 +34,7 @@ interface LeadRowActionsProps {
   onAssign: (lead: ILead) => void;
   onConvert: (lead: ILead) => void;
   onDelete: (lead: ILead) => void;
+  onUpdateStatus: (lead: ILead, status: LeadStatus) => void;
 }
 
 export function LeadRowActions({
@@ -34,6 +42,7 @@ export function LeadRowActions({
   onOpenDetails,
   onEdit,
   onAssign,
+  onUpdateStatus,
   onConvert,
   onDelete,
 }: LeadRowActionsProps) {
@@ -49,7 +58,10 @@ export function LeadRowActions({
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" onClick={(event) => event.stopPropagation()}>
+      <DropdownMenuContent
+        align="end"
+        onClick={(event) => event.stopPropagation()}
+      >
         <DropdownMenuItem onClick={() => onOpenDetails(lead)}>
           <Eye className="h-4 w-4" />
           View Details
@@ -68,6 +80,29 @@ export function LeadRowActions({
             Convert to Client
           </DropdownMenuItem>
         )}
+      <DropdownMenuSub>
+  <DropdownMenuSubTrigger>
+    <RefreshCw className="mr-2 h-4 w-4" />
+    Update Status
+  </DropdownMenuSubTrigger>
+
+  <DropdownMenuSubContent>
+    {LEAD_STATUS_OPTIONS.map((item) => (
+      <DropdownMenuItem
+        key={item.value}
+        disabled={lead.status === item.value}
+        onClick={() =>
+          onUpdateStatus(lead, item.value)
+        }
+      >
+        {lead.status === item.value && (
+          <Check className="mr-2 h-4 w-4" />
+        )}
+        {item.label}
+      </DropdownMenuItem>
+    ))}
+  </DropdownMenuSubContent>
+</DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={() => onDelete(lead)}>
           <Trash2 className="h-4 w-4" />

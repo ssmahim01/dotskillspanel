@@ -30,6 +30,35 @@ export const uploadToCloudinary = async (file: File): Promise<string> => {
   }
 };
 
+export const uploadFileToCloudinary = async (
+  file: File,
+  resourceType: "image" | "raw" | "auto" = "auto",
+): Promise<string> => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append(
+    "upload_preset",
+    process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "unsigned",
+  );
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+      { method: "POST", body: formData },
+    );
+
+    if (!response.ok) {
+      throw new Error("Cloudinary upload failed");
+    }
+
+    const data = await response.json();
+    return data.secure_url as string;
+  } catch (error) {
+    console.error("Cloudinary file upload error:", error);
+    throw error;
+  }
+};
+
 export const uploadMultipleToCloudinary = async (files: File[]): Promise<string[]> => {
   try {
     const uploadPromises = files.map(file => uploadToCloudinary(file));

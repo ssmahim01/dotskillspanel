@@ -20,7 +20,7 @@ import { LeadAssignDialog } from "./lead-assign-dialog";
 import { LeadConvertDialog } from "./lead-convert-dialog";
 import { LeadDetailsDrawer } from "./lead-details-drawer";
 import { LeadImportDialog } from "./lead-import-dialog";
-import type { ILead } from "@/types/lead";
+import type { ILead, LeadStatus } from "@/types/lead";
 
 export function LeadsPageClient() {
   const {
@@ -36,7 +36,31 @@ export function LeadsPageClient() {
   } = useLeadFilters();
 
   const { data, isLoading, isError, error, refetch } = useLeads(queryFilters);
-  const { assignLead, trashLead } = useLeadMutations();
+  const { assignLead, trashLead, updateLeadStatus } = useLeadMutations();
+
+  const handleUpdateStatus = useCallback(
+    (lead: ILead, status?: LeadStatus) => {
+      if (!status) return;
+
+      updateLeadStatus.mutate(
+        {
+          id: lead._id,
+          payload: {
+            status,
+          },
+        },
+        {
+          onSuccess: () => {
+            toast.success("Lead status updated.");
+          },
+          onError: () => {
+            toast.error("Failed to update lead status.");
+          },
+        },
+      );
+    },
+    [updateLeadStatus],
+  );
 
   const leads = data?.data ?? [];
   const meta = data?.meta;
@@ -172,6 +196,7 @@ export function LeadsPageClient() {
 
         <LeadsTable
           leads={leads}
+          onUpdateStatus={handleUpdateStatus}
           isLoading={isLoading}
           isError={isError}
           errorMessage={error?.message}

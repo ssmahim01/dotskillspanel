@@ -59,6 +59,7 @@ export interface ILeadAttachment {
   title: string;
   url: string;
   type: AttachmentType;
+  uploadedBy?: IUserSummary;
   uploadedAt?: string;
 }
 
@@ -140,6 +141,8 @@ export interface ILead {
   updatedAt: string;
 }
 
+
+
 export interface CreateLeadPayload {
   firstName: string;
   lastName: string;
@@ -208,6 +211,8 @@ export interface ConvertLeadPayload {
 export interface AddLeadNotePayload {
   message: string;
 }
+
+
 
 export interface AddLeadAttachmentPayload {
   title: string;

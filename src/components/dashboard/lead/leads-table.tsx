@@ -23,12 +23,13 @@ import { getLeadsTableColumns } from "./leads-table-columns";
 import { LeadsEmptyState } from "./leads-empty-state";
 import { LeadsTableError, LeadsTableSkeleton } from "./leads-table-states";
 import { LeadsColumnVisibility } from "./leads-column-visibility";
-import type { ILead, LeadFilters } from "@/types/lead";
+import type { ILead, LeadFilters, LeadStatus } from "@/types/lead";
 
 interface LeadsTableProps {
   leads: ILead[];
   isLoading: boolean;
   isError: boolean;
+  onUpdateStatus: (lead: ILead, status?: LeadStatus) => void;
   errorMessage?: string;
   hasActiveFilters: boolean;
   sort: string;
@@ -65,6 +66,7 @@ export function LeadsTable({
   onAddLead,
   onRetry,
   selection,
+     onUpdateStatus,
   onSelectionChange,
   onOpenDetails,
   onEdit,
@@ -76,8 +78,8 @@ export function LeadsTable({
 
   const columns = useMemo(
     () =>
-      getLeadsTableColumns({ onOpenDetails, onEdit, onAssign, onConvert, onDelete }),
-    [onOpenDetails, onEdit, onAssign, onConvert, onDelete],
+      getLeadsTableColumns({ onOpenDetails, onUpdateStatus, onEdit, onAssign, onConvert, onDelete }),
+    [onOpenDetails, onEdit, onAssign, onConvert, onDelete, onUpdateStatus],
   );
 
   const table = useReactTable({

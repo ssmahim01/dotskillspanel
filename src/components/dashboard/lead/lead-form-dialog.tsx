@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/incompatible-library */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { Loader2, Paperclip, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ import {
 } from "@/features/leads/schemas/lead.schema";
 import type { ILead } from "@/types/lead";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { uploadMultipleToCloudinary } from "@/utils/cloudinary";
 
 interface LeadFormDialogProps {
   mode: "create" | "edit";
@@ -49,7 +51,11 @@ interface LeadFormDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const EMPTY_VALUES: CreateLeadFormValues = {
+type LeadFormDialogValues = CreateLeadFormValues & {
+  attachments: string[];
+};
+
+const EMPTY_VALUES: LeadFormDialogValues = {
   firstName: "",
   lastName: "",
   email: "",
@@ -76,9 +82,10 @@ const EMPTY_VALUES: CreateLeadFormValues = {
   requirementDescription: "",
   budget: undefined,
   timeline: "",
+  attachments: [],
 };
 
-const leadToFormValues = (lead: ILead): CreateLeadFormValues => ({
+const leadToFormValues = (lead: ILead): LeadFormDialogValues => ({
   firstName: lead.firstName,
   lastName: lead.lastName,
   email: lead.email ?? "",
@@ -105,12 +112,16 @@ const leadToFormValues = (lead: ILead): CreateLeadFormValues => ({
   requirementDescription: lead.requirementDescription ?? "",
   budget: lead.budget,
   timeline: lead.timeline ?? "",
+  attachments: lead?.attachments ?? [],
 });
 
 export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialogProps) {
   const { createLead, updateLead } = useLeadMutations();
   const { data: usersResponse } = useAssignableUsers();
   const users = usersResponse?.data ?? [];
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<CreateLeadFormValues>({
     resolver: zodResolver(createLeadFormSchema as any),
@@ -125,6 +136,39 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
   }, [open, lead, mode]);
 
   const isSubmitting = createLead.isPending || updateLead.isPending;
+  // const attachments = form.watch("attachments") ?? [];
+
+  const handleFilesSelected = async (fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) return;
+
+    const files = Array.from(fileList);
+    setIsUploading(true);
+    try {
+      const urls = await uploadMultipleToCloudinary(files);
+      // form.setValue("attachments", [...attachments, ...urls], {
+      //   shouldDirty: true,
+      //   shouldValidate: true,
+      // });
+      toast.success(
+        urls.length > 1 ? `${urls.length} files uploaded.` : "File uploaded.",
+      );
+    } catch (error) {
+      toast.error("Failed to upload attachment(s).");
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  // const handleRemoveAttachment = (url: string) => {
+  //   form.setValue(
+  //     "attachments",
+  //     attachments.filter((item) => item !== url),
+  //     { shouldDirty: true },
+  //   );
+  // };
 
   const onSubmit = form.handleSubmit((values) => {
     const payload = {
@@ -308,6 +352,60 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
                 placeholder="Interested in our enterprise plan..."
               />
             </Field>
+
+            {/* <Field label="Attachments">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => handleFilesSelected(e.target.files)}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="w-fit"
+                disabled={isUploading}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {isUploading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Paperclip className="h-4 w-4" />
+                )}
+                {isUploading ? "Uploading..." : "Upload file(s)"}
+              </Button>
+
+              {attachments.length > 0 && (
+                <ul className="mt-2 flex flex-col gap-2">
+                  {attachments.map((url) => (
+                    <li
+                      key={url}
+                      className="flex items-center justify-between gap-2 rounded-md border bg-background px-2 py-1 text-xs"
+                    >
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="truncate text-blue-600 hover:underline"
+                      >
+                        {url.split("/").pop()}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAttachment(url)}
+                        className="text-muted-foreground hover:text-destructive"
+                        aria-label="Remove attachment"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Field> */}
           </section>
 
           <DialogFooter>
@@ -319,7 +417,7 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || isUploading}>
               {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {mode === "create" ? "Create Lead" : "Save Changes"}
             </Button>
