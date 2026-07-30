@@ -112,7 +112,7 @@ const leadToFormValues = (lead: ILead): LeadFormDialogValues => ({
   requirementDescription: lead.requirementDescription ?? "",
   budget: lead.budget,
   timeline: lead.timeline ?? "",
-  attachments: lead?.attachments ?? [],
+  attachments: lead?.attachments?.map((attachment) => attachment.url) ?? [],
 });
 
 export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialogProps) {
