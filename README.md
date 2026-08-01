@@ -1,4 +1,10 @@
 <div align="center">
+  <img width="100%" height="360" src="/public/assets/projects-dotskills-panel.png" />
+</div>
+
+---
+
+<div align="center">
 
 # 📐 DOTSKILLS
 ## Software Requirements Specification
@@ -7,7 +13,7 @@
 
 ---
 
-🏢 <img src="/assets/DotSkills Panel.png" alt="DotSkills Logo" width="180"/>
+🏢 <img src="/public/assets/DotSkills Panel.png" alt="DotSkills Logo" width="180"/>
 
 ---
 
