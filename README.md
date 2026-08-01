@@ -1,13 +1,13 @@
 <div align="center">
 
-# 📐 DOTSKILLS PANEL
+# 📐 DOTSKILLS
 ## Software Requirements Specification
 
 **Enterprise Business Management & CRM Platform**
 
 ---
 
-🏢 **[ COMPANY LOGO PLACEHOLDER — 200×200px, transparent PNG/SVG ]**
+🏢 <img src="/assets/DotSkills Panel.png" alt="DotSkills Logo" width="180"/>
 
 ---
 
