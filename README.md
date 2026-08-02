@@ -35,17 +35,6 @@
 
 ---
 
-## 📋 Revision History
-
-| Version | Date | Author | Description of Changes | Status |
-|:---|:---|:---|:---|:---:|
-| 0.1.0 | 2026-05-12 | Product Team | Initial draft — scope & tech stack | 🔵 Draft |
-| 0.5.0 | 2026-06-20 | Engineering Team | Added Auth, RBAC, User & Lead modules (post-implementation) | 🔵 Draft |
-| 0.8.0 | 2026-07-18 | Product & QA | Added roadmap, feature matrix, NFRs, test strategy | 🟡 Review |
-| **1.0.0** | **2026-08-01** | **DotSkills Product & Engineering Team** | **Full baseline release — all modules, diagrams, roadmap** | 🟢 **Approved** |
-
----
-
 ## 📚 Table of Contents
 
 1. [Executive Summary](#1-executive-summary)
@@ -104,7 +93,6 @@ The platform ships as two coordinated surfaces:
 | 🔐 **Enforce accountability** | Role-based access control (RBAC) and audit logging so every action is attributable and every permission is deliberate. |
 | ⚙️ **Reduce operational overhead** | Automate repetitive admin work — invoicing, certificate issuance, notifications — freeing staff time for higher-value work. |
 | 🎓 **Support the education business** | First-class modules for courses, students, and certificates, not bolted onto a generic CRM. |
-| 🤖 **Future-proof with AI** | Architecture and data model designed so AI-assisted features (Section 13) can be layered in without a rebuild. |
 
 ## 1.3 Target Users
 
