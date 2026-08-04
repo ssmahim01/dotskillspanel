@@ -75,7 +75,7 @@ export const userApi = {
     apiClient.patch<ApiResponse<User>>(`${BASE_URL}/${id}`, payload),
 
   deleteUser: (id: string) =>
-    apiClient.delete<ApiResponse<{ _id: string }>>(`${BASE_URL}/${id}`),
+    apiClient.patch<ApiResponse<{ _id: string }>>(`${BASE_URL}/${id}/soft-delete`),
 
   updateStatus: (id: string, payload: UpdateUserStatusPayload) =>
     apiClient.patch<ApiResponse<User>>(`${BASE_URL}/${id}/status`, payload),
