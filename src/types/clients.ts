@@ -1,4 +1,4 @@
-import type { User } from "./user.types"
+import type { User } from "./user.types";
 
 export enum ClientStatus {
   ACTIVE = "ACTIVE",
@@ -43,7 +43,10 @@ export interface IClientDocument {
 export interface IClient {
   _id: string;
 
-  leadId?: string;
+  leadId?: {
+    email?: string;
+    phone: string;
+  };
 
   assignedManager?: User;
   accountManager?: User;
@@ -56,8 +59,6 @@ export interface IClient {
   lastName: string;
   fullName?: string;
 
-  email?: string;
-  phone: string;
   alternatePhone?: string;
 
   companyName?: string;
@@ -195,8 +196,7 @@ export interface CreateClientPayload {
   customFields?: Record<string, unknown>;
 }
 
-export type UpdateClientPayload =
-  Partial<CreateClientPayload>;
+export type UpdateClientPayload = Partial<CreateClientPayload>;
 
 export interface AssignClientManagerPayload {
   accountManager: string;

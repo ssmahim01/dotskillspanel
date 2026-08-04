@@ -14,7 +14,7 @@ export interface NavItem {
   id: PageAccess;
   label: string;
   href: string;
-  icon?: string; // Icon name from lucide-react
+  icon?: string; 
   badge?: string;
   description?: string;
 }
@@ -84,9 +84,9 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           description: "Manage team members",
         },
         {
-          id: "customer-management",
-          label: "Customers",
-          href: "/dashboard/customer-management",
+          id: "clients-management",
+          label: "Clients",
+          href: "/dashboard/admin/clients",
         },
         {
           id: "product-management",
@@ -159,10 +159,10 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           label: "Products",
           href: "/dashboard/product-management",
         },
-        {
-          id: "customer-management",
-          label: "Customers",
-          href: "/dashboard/customer-management",
+       {
+          id: "clients-management",
+          label: "Clients",
+          href: "/dashboard/admin/clients",
         },
       ],
     },
@@ -191,6 +191,11 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           id: "orders-management",
           label: "Orders",
           href: "/dashboard/orders-management",
+        },
+         {
+          id: "clients-management",
+          label: "Clients",
+          href: "/dashboard/clients",
         },
       ],
     },
@@ -238,6 +243,11 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           label: "Leads",
           href: "/dashboard/leads",
         },
+         {
+          id: "clients-management",
+          label: "Clients",
+          href: "/dashboard/clients",
+        },
         {
           id: "dashboard",
           label: "Dashboard",
@@ -264,6 +274,11 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           id: "leads",
           label: "Leads",
           href: "/dashboard/leads",
+        },
+         {
+          id: "clients-management",
+          label: "Clients",
+          href: "/dashboard/clients",
         },
         {
           id: "my-orders",

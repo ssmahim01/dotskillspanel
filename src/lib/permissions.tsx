@@ -32,6 +32,7 @@ export type PageAccess =
   | "automation"
   | "billing"
   | "security"
+  | "clients-management"
   | "product-management"
   | "purchase-products"
   | "returns"

@@ -30,7 +30,6 @@ import { useRouter } from "next/navigation";
 import { SidebarNavItems } from "./SidebarNavItems";
 
 type PremiumSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  /** Fires when the search pill/icon is activated — wire to your command palette. */
   onSearchClick?: () => void;
 };
 

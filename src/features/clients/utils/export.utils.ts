@@ -64,9 +64,9 @@ export const exportClients = (
 
     client.companyName ?? "",
 
-    client.email ?? "",
+    client.leadId?.email ?? "",
 
-    client.phone ?? "",
+    client.leadId?.phone ?? "",
 
     client.status,
 

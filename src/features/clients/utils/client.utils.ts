@@ -19,8 +19,8 @@ export const getClientDisplayName = (
   return (
     client.companyName ||
     getClientFullName(client) ||
-    client.email ||
-    client.phone ||
+    client.leadId?.email ||
+    client.leadId?.phone ||
     "Unknown Client"
   );
 };
