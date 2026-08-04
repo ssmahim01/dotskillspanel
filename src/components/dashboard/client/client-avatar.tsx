@@ -25,7 +25,7 @@ export function ClientAvatar({
   return (
     <Avatar className={cn(sizeClasses[size], className)}>
       <AvatarImage
-        src={`https://avatar.vercel.sh/${client?.email}`}
+        src={`https://avatar.vercel.sh/${client?.leadId?.email}`}
         alt={initials}
       />
       <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600">
