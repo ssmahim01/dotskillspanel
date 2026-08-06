@@ -417,7 +417,7 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting || isUploading}>
+            <Button type="submit" disabled={isSubmitting || isUploading} variant="default" className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600">
               {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {mode === "create" ? "Create Lead" : "Save Changes"}
             </Button>

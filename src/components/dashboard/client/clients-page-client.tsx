@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
+
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { useClients, useClientMutations } from "@/features/clients/hooks";
 import type { IClient } from "@/types/clients";
 import type { CreateClientValues } from "@/features/clients/schemas/client.schema";
@@ -27,20 +30,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Download } from "lucide-react";
+import { Plus, Download, Trash2 } from "lucide-react";
 import { CLIENT_STATUS_OPTIONS } from "@/features/clients/constants/client.constant";
 import { exportClients } from "@/features/clients/utils/export.utils";
-
-// Mock managers - replace with actual data from API
-const mockManagers = [
-  { _id: "1", firstName: "John", lastName: "Doe" },
-  { _id: "2", firstName: "Jane", lastName: "Smith" },
-  { _id: "3", firstName: "Bob", lastName: "Johnson" },
-];
+import { getClientFullName } from "@/features/clients/utils/client.utils";
+import { useUsers } from "@/features/users/hooks";
 
 export function ClientsPageClient() {
   const { data: clients = [], isLoading } = useClients();
   const mutations = useClientMutations();
+  const { data: usersResponse } = useUsers();
+
+  const managers =
+    usersResponse?.data?.filter((user) => user.role === "MANAGER") ?? [];
 
   // Dialog states
   const [formDialogOpen, setFormDialogOpen] = useState(false);
@@ -48,6 +50,10 @@ export function ClientsPageClient() {
   const [noteDialogOpen, setNoteDialogOpen] = useState(false);
   const [documentDialogOpen, setDocumentDialogOpen] = useState(false);
   const [detailsSheetOpen, setDetailsSheetOpen] = useState(false);
+
+  // Soft-delete confirmation — replaces the old window.confirm() call.
+  const [deleteTarget, setDeleteTarget] = useState<IClient | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   // Selected client
   const [selectedClient, setSelectedClient] = useState<IClient | null>(null);
@@ -58,14 +64,13 @@ export function ClientsPageClient() {
   const filteredClients = clients.filter((client) => {
     const matchesSearch =
       !searchTerm ||
-      client.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.leadId?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.leadId?.phone.includes(searchTerm) ||
       client.companyName?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus =
-      !filterStatus || client.status === filterStatus;
+    const matchesStatus = !filterStatus || client.status === filterStatus;
 
     return matchesSearch && matchesStatus;
   });
@@ -98,9 +103,7 @@ export function ClientsPageClient() {
     }
   };
 
-  const handleAssignManager = async (
-    data: AssignClientManagerValues
-  ) => {
+  const handleAssignManager = async (data: AssignClientManagerValues) => {
     if (!selectedClient) return;
     try {
       await mutations.assignManager.mutateAsync({
@@ -131,9 +134,7 @@ export function ClientsPageClient() {
     }
   };
 
-  const handleUploadDocument = async (
-    data: AddClientDocumentValues
-  ) => {
+  const handleUploadDocument = async (data: AddClientDocumentValues) => {
     if (!selectedClient) return;
     try {
       await mutations.addDocument.mutateAsync({
@@ -148,11 +149,19 @@ export function ClientsPageClient() {
     }
   };
 
-  const handleDeleteClient = async (client: IClient) => {
-    if (!confirm("Are you sure you want to delete this client?")) return;
+  // Opens the confirm dialog instead of window.confirm().
+  const handleRequestDelete = (client: IClient) => {
+    setDeleteTarget(client);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return;
     try {
-      await mutations.trashClient.mutateAsync(client._id);
-      toast.success("Client deleted successfully");
+      await mutations.trashClient.mutateAsync(deleteTarget._id);
+      toast.success(`${getClientFullName(deleteTarget)} moved to trash.`);
+      setDeleteDialogOpen(false);
+      setDeleteTarget(null);
     } catch (error) {
       toast.error("Failed to delete client");
       console.error(error);
@@ -172,7 +181,7 @@ export function ClientsPageClient() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center md:flex-row flex-col gap-4 justify-between">
         <div>
           <h1 className="text-2xl font-bold">Clients</h1>
           <p className="text-muted-foreground">
@@ -180,6 +189,17 @@ export function ClientsPageClient() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button
+            variant="default"
+            size="sm"
+            className="gap-2 hover:cursor-pointer hover:scale-105 transition-transform duration-500 transform ease-in-out hover:bg-rose-800 text-white bg-red-600"
+            asChild
+          >
+            <Link href="/dashboard/clients/trash">
+              <Trash2 className="h-4 w-4" />
+              Trash
+            </Link>
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -195,7 +215,7 @@ export function ClientsPageClient() {
               setSelectedClient(null);
               setFormDialogOpen(true);
             }}
-            className="gap-2"
+            className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600"
           >
             <Plus className="h-4 w-4" />
             Add Client
@@ -260,7 +280,7 @@ export function ClientsPageClient() {
           setSelectedClient(client);
           setDocumentDialogOpen(true);
         }}
-        onDelete={handleDeleteClient}
+        onDelete={handleRequestDelete}
       />
 
       {/* Dialogs */}
@@ -268,19 +288,16 @@ export function ClientsPageClient() {
         open={formDialogOpen}
         onOpenChange={setFormDialogOpen}
         client={selectedClient ?? undefined}
-        onSubmit={
-          selectedClient ? handleEditClient : handleCreateClient
-        }
+        onSubmit={selectedClient ? handleEditClient : handleCreateClient}
         isSubmitting={
-          mutations.createClient.isPending ||
-          mutations.updateClient.isPending
+          mutations.createClient.isPending || mutations.updateClient.isPending
         }
       />
 
       <ClientAssignDialog
         open={assignDialogOpen}
         onOpenChange={setAssignDialogOpen}
-        managers={mockManagers}
+        managers={managers}
         onSubmit={handleAssignManager}
         isSubmitting={mutations.assignManager.isPending}
         currentManager={selectedClient?.accountManager?._id}
@@ -298,6 +315,20 @@ export function ClientsPageClient() {
         onOpenChange={setDocumentDialogOpen}
         onSubmit={handleUploadDocument}
         isSubmitting={mutations.addDocument.isPending}
+      />
+
+      {/* Soft-delete confirmation */}
+      <ConfirmDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title="Move client to trash?"
+        description={`This will soft-delete ${
+          deleteTarget ? getClientFullName(deleteTarget) : "this client"
+        }. You can restore them later from the trash.`}
+        confirmText="Move to Trash"
+        variant="destructive"
+        isLoading={mutations.trashClient.isPending}
+        onConfirm={handleConfirmDelete}
       />
 
       {/* Details Sheet */}

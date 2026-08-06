@@ -42,8 +42,15 @@ export interface IClientDocument {
 
 export interface IClient {
   _id: string;
+  firstName: string;
+  lastName: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
 
   leadId?: {
+    firstName?: string;
+    lastName?: string;
     email?: string;
     phone: string;
   };
@@ -54,10 +61,6 @@ export interface IClient {
   clientType: ClientType;
 
   clientCode: string;
-
-  firstName: string;
-  lastName: string;
-  fullName?: string;
 
   alternatePhone?: string;
 

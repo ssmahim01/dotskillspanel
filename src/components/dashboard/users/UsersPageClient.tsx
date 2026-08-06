@@ -135,7 +135,7 @@ export function UsersPageClient() {
         </div>
         <Button
           onClick={() => setDialogState((p) => ({ ...p, createOpen: true }))}
-          className="gap-2"
+          className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600"
         >
           <Plus className="h-4 w-4" />
           Add user

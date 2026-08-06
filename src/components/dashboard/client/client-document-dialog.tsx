@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 "use client";
 
 import {
@@ -174,7 +175,7 @@ export function ClientDocumentDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="gap-2 hover:cursor-pointer hover:scale-105 transition-transform duration-500 transform ease-in-out hover:bg-teal-800 text-white bg-indigo-600">
               {isSubmitting && (
                 <Loader className="mr-2 h-4 w-4 animate-spin" />
               )}

@@ -122,6 +122,7 @@ export function ClientAssignDialog({
             <Button
               type="submit"
               disabled={isSubmitting}
+              className="gap-2 hover:cursor-pointer hover:scale-105 transition-transform duration-500 transform ease-in-out hover:bg-indigo-800 text-white bg-teal-600"
             >
               {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

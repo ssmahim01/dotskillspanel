@@ -61,7 +61,7 @@ export function ClientsStats() {
         return (
           <Card
             key={stat.key}
-            className="rounded-xl border-0 bg-linear-to-br shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+            className="rounded-xl border-0 bg-linear-to-br bg-gray-100 dark:bg-slate-900 ease-in-out duration-500 transform hover:bg-slate-950 hover:scale-105 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
           >
             <CardContent className="pt-6">
               {isLoading ? (
@@ -79,7 +79,7 @@ export function ClientsStats() {
                     </div>
                     <div
                       className={cn(
-                        "h-10 w-10 rounded-lg flex items-center justify-center text-white bg-gradient-to-br",
+                        "h-10 w-10 rounded-lg flex items-center justify-center text-white bg-linear-to-br",
                         stat.color
                       )}
                     >

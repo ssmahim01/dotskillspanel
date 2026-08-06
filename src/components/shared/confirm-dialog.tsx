@@ -58,6 +58,7 @@ export function ConfirmDialog({
             className={cn(
               variant === "destructive" &&
                 buttonVariants({ variant: "destructive" }),
+                "gap-2 hover:cursor-pointer hover:scale-105 transition-transform duration-500 transform ease-in-out hover:bg-rose-800 text-white bg-red-600"
             )}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

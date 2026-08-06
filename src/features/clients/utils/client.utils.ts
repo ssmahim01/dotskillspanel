@@ -5,7 +5,7 @@ export const getClientFullName = (
 ): string => {
   if (!client) return "Unknown Client";
 
-  return [client.firstName, client.lastName]
+  return [client?.firstName || client.leadId?.firstName, client?.lastName || client.leadId?.lastName]
     .filter(Boolean)
     .join(" ")
     .trim();

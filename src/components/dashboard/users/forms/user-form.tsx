@@ -380,7 +380,7 @@ export function UserForm({ user, isLoading, onSubmit }: UserFormProps) {
         <Button
           type="submit"
           disabled={isLoading}
-          className="h-11 gap-2 rounded-xl px-6 font-medium shadow-[0_1px_2px_rgba(79,70,229,0.1),0_8px_20px_-8px_rgba(79,70,229,0.5)] disabled:pointer-events-none disabled:opacity-70"
+          className="h-11 rounded-xl px-6 font-medium shadow-[0_1px_2px_rgba(79,70,229,0.1),0_8px_20px_-8px_rgba(79,70,229,0.5)] disabled:pointer-events-none disabled:opacity-70 gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600"
         >
           {isLoading && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
           {isEditMode ? "Update user" : "Create user"}

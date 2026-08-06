@@ -75,7 +75,7 @@ export function ClientsTable({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="bg-muted/50 hover:bg-muted/50">
+            <TableRow key={headerGroup.id} className="hover:bg-cyan-800 *:text-white bg-indigo-600">
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id} className="h-12">
                   {header.isPlaceholder

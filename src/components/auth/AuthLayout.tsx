@@ -9,7 +9,7 @@ import { AuthHeader } from "@/components/auth/AuthHeader";
 import { AuthIllustration } from "@/components/auth/AuthIllustration";
 import { useAuthStore } from "@/stores";
 
-const DEFAULT_AUTHENTICATED_PATH = "/dashboard/leads";
+const DEFAULT_AUTHENTICATED_PATH = "/dashboard";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -26,8 +26,6 @@ export function AuthLayout({ children }: AuthLayoutProps) {
     }
   }, [isInitialized, isAuthenticated, router]);
 
-  // Bootstrap (GET /user/me) hasn't resolved yet — show a quiet loading
-  // state instead of flashing the login form.
   if (!isInitialized) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center bg-background">
@@ -41,7 +39,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
 
   return (
     <div className="flex min-h-screen w-full bg-background">
-      <aside className="hidden w-[45%] max-w-[560px] lg:block xl:w-[42%]">
+      <aside className="hidden w-[45%] max-w-140 lg:block xl:w-[42%]">
         <AuthIllustration />
       </aside>
 
@@ -51,7 +49,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         </div>
 
         <main className="flex flex-1 flex-col items-center justify-center px-6 py-10 sm:px-10">
-          <div className="w-full max-w-[420px] space-y-8">
+          <div className="w-full max-w-105 space-y-8">
             <div className="hidden lg:block">
               <AuthHeader />
             </div>

@@ -80,7 +80,7 @@ export function getClientsTableColumns(
                 {getClientFullName(client)}
               </p>
               <p className="text-xs text-muted-foreground truncate">
-                {client.leadId?.email || client.leadId?.phone}
+                {client.leadId?.email || client?.email || client?.phone || client.leadId?.phone}
               </p>
             </div>
           </div>
@@ -101,9 +101,10 @@ export function getClientsTableColumns(
       header: "Phone",
       cell: ({ row }) => {
         const lead = row.original.leadId;
+          const client = row.original;
         return (
           
-        <div className="text-sm">{lead?.phone || "-"}</div>
+        <div className="text-sm">{client?.phone || lead?.phone || "-"}</div>
       )
         
       }
@@ -113,9 +114,10 @@ export function getClientsTableColumns(
       header: "Email",
       cell: ({ row }) => {
          const lead = row.original.leadId;
+           const client = row.original;
         return (
           
-        <div className="text-sm">{lead?.email || "-"}</div>
+        <div className="text-sm">{client?.email || lead?.email || "-"}</div>
       )
       }
     },
@@ -143,11 +145,11 @@ export function getClientsTableColumns(
       ),
     },
     {
-      accessorKey: "totalRevenue",
-      header: "Revenue",
+      accessorKey: "budget",
+      header: "Budget",
       cell: ({ row }) => (
         <div className="text-sm font-medium">
-          {formatCurrency(row.original.totalRevenue)}
+          {formatCurrency(row.original.budget)}
         </div>
       ),
     },
