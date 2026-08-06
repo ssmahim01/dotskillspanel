@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Plus, Search, SlidersHorizontal, Upload } from "lucide-react";
+import {
+  Download,
+  Plus,
+  Search,
+  SlidersHorizontal,
+  Trash2,
+  Upload,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +27,7 @@ import {
 } from "@/features/leads/constants/lead.constant";
 import type { LeadFilters } from "@/types/lead";
 import { LeadsMoreFiltersSheet } from "./leads-more-filters-sheet";
+import Link from "next/link";
 
 interface LeadsToolbarProps {
   filters: LeadFilters;
@@ -65,11 +73,12 @@ export function LeadsToolbar({
           value={filters.status ?? ALL}
           onValueChange={(value) =>
             onUpdateFilters({
-              status: value === ALL ? undefined : (value as LeadFilters["status"]),
+              status:
+                value === ALL ? undefined : (value as LeadFilters["status"]),
             })
           }
         >
-          <SelectTrigger className="w-full sm:w-[140px]">
+          <SelectTrigger className="w-full sm:w-35">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -86,11 +95,12 @@ export function LeadsToolbar({
           value={filters.source ?? ALL}
           onValueChange={(value) =>
             onUpdateFilters({
-              source: value === ALL ? undefined : (value as LeadFilters["source"]),
+              source:
+                value === ALL ? undefined : (value as LeadFilters["source"]),
             })
           }
         >
-          <SelectTrigger className="w-full sm:w-[140px]">
+          <SelectTrigger className="w-full sm:w-35">
             <SelectValue placeholder="Source" />
           </SelectTrigger>
           <SelectContent>
@@ -112,7 +122,7 @@ export function LeadsToolbar({
             })
           }
         >
-          <SelectTrigger className="w-full sm:w-[140px]">
+          <SelectTrigger className="w-full sm:w-35">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -140,16 +150,31 @@ export function LeadsToolbar({
         </Button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center flex-wrap gap-3">
         <Button variant="outline" onClick={onImport}>
           <Upload className="h-4 w-4" />
           Import
+        </Button>
+        <Button
+          variant="default"
+          size="sm"
+          className="gap-2 hover:cursor-pointer hover:scale-105 transition-transform duration-500 transform ease-in-out hover:bg-rose-800 text-white bg-red-600"
+          asChild
+        >
+          <Link href="/dashboard/leads/trash">
+            <Trash2 className="h-4 w-4" />
+            Trash
+          </Link>
         </Button>
         <Button variant="outline" onClick={onExport}>
           <Download className="h-4 w-4" />
           Export
         </Button>
-        <Button onClick={onAddLead} variant={"default"} className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600">
+        <Button
+          onClick={onAddLead}
+          variant={"default"}
+          className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600"
+        >
           <Plus className="h-4 w-4" />
           Add Lead
         </Button>

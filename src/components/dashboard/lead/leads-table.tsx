@@ -145,7 +145,7 @@ export function LeadsTable({
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow key={headerGroup.id} className="hover:bg-cyan-800 *:text-white bg-indigo-600">
                   {headerGroup.headers.map((header) => (
                     <TableHead key={header.id} style={{ width: header.getSize() }}>
                       {header.isPlaceholder ? null : SORTABLE_COLUMNS.has(
@@ -154,7 +154,7 @@ export function LeadsTable({
                         <button
                           type="button"
                           className={cn(
-                            "flex items-center gap-1 text-xs font-medium uppercase text-muted-foreground",
+                            "flex items-center gap-1 text-xs font-medium uppercase",
                           )}
                           onClick={() => handleSortClick(header.column.id)}
                         >
@@ -162,7 +162,7 @@ export function LeadsTable({
                           {getSortIcon(header.column.id)}
                         </button>
                       ) : (
-                        <span className="text-xs font-medium uppercase text-muted-foreground">
+                        <span className="text-xs font-medium uppercase">
                           {typeof header.column.columnDef.header === "string"
                             ? header.column.columnDef.header
                             : null}
