@@ -1430,48 +1430,7 @@ graph TD
 
 # 15. Development Roadmap
 
-## 15.1 Phase Timeline
-
-```mermaid
-gantt
-    title DotSkills Panel — Development Roadmap
-    dateFormat  YYYY-MM-DD
-    axisFormat  %b %Y
-
-    section Phase 1 — Foundation (✅ Completed)
-    Authentication            :done, p1a, 2026-04-01, 2026-04-20
-    User Management           :done, p1b, 2026-04-15, 2026-05-05
-    RBAC                      :done, p1c, 2026-04-20, 2026-05-10
-    Dashboard Shell           :done, p1d, 2026-05-05, 2026-05-20
-    Lead Management           :done, p1e, 2026-05-15, 2026-06-15
-
-    section Phase 2 — Core CRM
-    Client Management         :active, p2a, 2026-08-01, 2026-08-25
-    Company Management        :p2b, 2026-08-15, 2026-09-05
-    Project Management        :p2c, 2026-09-01, 2026-09-30
-    Task Management            :p2d, 2026-09-15, 2026-10-10
-    Calendar                  :p2e, 2026-10-01, 2026-10-20
-
-    section Phase 3 — Operations
-    Finance & Invoicing       :p3a, 2026-10-20, 2026-11-20
-    HR                        :p3b, 2026-11-10, 2026-12-05
-    Reports                   :p3c, 2026-11-25, 2026-12-15
-    Notifications             :p3d, 2026-12-01, 2026-12-15
-    Media Library             :p3e, 2026-12-05, 2026-12-20
-
-    section Phase 4 — Public & Education
-    Website CMS               :p4a, 2027-01-05, 2027-02-05
-    Course Management         :p4b, 2027-01-20, 2027-02-20
-    Student Management        :p4c, 2027-02-10, 2027-03-05
-    Certificate Management    :p4d, 2027-02-25, 2027-03-15
-
-    section Phase 5 — Intelligence
-    AI Platform                :p5a, 2027-03-15, 2027-05-01
-    Integrations                :p5b, 2027-03-20, 2027-05-10
-    Advanced Analytics          :p5c, 2027-04-15, 2027-05-20
-```
-
-## 15.2 Phase Summary
+## 15.1 Phase Summary
 
 | Phase | Theme | Key Deliverables | Status |
 |---|---|---|:---:|
@@ -1724,25 +1683,14 @@ flowchart TD
 | CI/CD | Continuous Integration / Continuous Deployment |
 | WCAG | Web Content Accessibility Guidelines |
 
-## 22.3 Version History
-
-*(Mirrors the Revision History table on the title page — reproduced here for print/appendix convenience.)*
-
-| Version | Date | Summary |
-|---|---|---|
-| 0.1.0 | 2026-05-12 | Initial draft |
-| 0.5.0 | 2026-06-20 | Phase 1 modules documented post-implementation |
-| 0.8.0 | 2026-07-18 | Roadmap, matrices, NFRs, testing strategy added |
-| 1.0.0 | 2026-08-01 | Full baseline release |
-
-## 22.4 References
+## 22.3 References
 
 - Internal reference implementation: DotSkills Panel frontend/backend repositories (sidebar, permissions, and dashboard components referenced throughout Sections 3, 5–10).
 - Design system inspiration: Linear, Stripe Dashboard, Vercel, Clerk, Notion (Section 3, dashboard shell aesthetic).
 - Schema.org structured-data vocabulary (Section 9, per-page SEO requirements).
 - WCAG 2.1 guidelines (Section 19, accessibility NFRs).
 
-## 22.5 Future Notes
+## 22.4 Future Notes
 
 - This SRS should be re-baselined (version bump to `2.0.0`) at the close of Phase 2 (Section 15), once Client/Company/Project/Task modules move from 🔵 Planned to 🟢 Completed.
 - Sections 13 (AI Roadmap) and 14 (Integrations) are intentionally directional rather than fully specified — they will be expanded into their own detailed SRS addenda once Phase 5 scoping begins.
