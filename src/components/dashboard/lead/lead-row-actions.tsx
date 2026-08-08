@@ -7,6 +7,7 @@ import {
   MoreHorizontal,
   Pencil,
   RefreshCw,
+  CalendarClock,
   Trash2,
   UserPlus,
 } from "lucide-react";
@@ -35,6 +36,7 @@ interface LeadRowActionsProps {
   onConvert: (lead: ILead) => void;
   onDelete: (lead: ILead) => void;
   onUpdateStatus: (lead: ILead, status: LeadStatus) => void;
+  onUpdateContactStatus: (lead: ILead) => void;
 }
 
 export function LeadRowActions({
@@ -43,6 +45,7 @@ export function LeadRowActions({
   onEdit,
   onAssign,
   onUpdateStatus,
+  onUpdateContactStatus,
   onConvert,
   onDelete,
 }: LeadRowActionsProps) {
@@ -80,7 +83,11 @@ export function LeadRowActions({
             Convert to Client
           </DropdownMenuItem>
         )}
-      <DropdownMenuSub>
+        <DropdownMenuItem onClick={() => onUpdateContactStatus(lead)}>
+          <CalendarClock className="h-4 w-4" />
+          Contact Status
+        </DropdownMenuItem>
+        <DropdownMenuSub>
   <DropdownMenuSubTrigger>
     <RefreshCw className="mr-2 h-4 w-4" />
     Update Status

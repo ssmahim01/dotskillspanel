@@ -244,6 +244,24 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
           </section>
 
           <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field label="Location">
+              <Input value={[form.watch("city"), form.watch("state"), form.watch("country")].filter(Boolean).join(", ")} placeholder="City, State, Country" readOnly />
+            </Field>
+            <Field label="Address">
+              <Input {...form.register("address")} placeholder="123 Main Street" />
+            </Field>
+            <Field label="City">
+              <Input {...form.register("city")} placeholder="Austin" />
+            </Field>
+            <Field label="State / Region">
+              <Input {...form.register("state")} placeholder="Texas" />
+            </Field>
+            <Field label="Country">
+              <Input {...form.register("country")} placeholder="United States" />
+            </Field>
+            <Field label="ZIP / Postal Code">
+              <Input {...form.register("zipCode")} placeholder="78701" />
+            </Field>
             <Field label="Source" error={form.formState.errors.source?.message}>
               <Select
                 value={form.watch("source")}

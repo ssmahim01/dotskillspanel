@@ -30,6 +30,7 @@ interface LeadsTableProps {
   isLoading: boolean;
   isError: boolean;
   onUpdateStatus: (lead: ILead, status?: LeadStatus) => void;
+  onUpdateContactStatus: (lead: ILead) => void;
   errorMessage?: string;
   hasActiveFilters: boolean;
   sort: string;
@@ -67,6 +68,7 @@ export function LeadsTable({
   onRetry,
   selection,
      onUpdateStatus,
+  onUpdateContactStatus,
   onSelectionChange,
   onOpenDetails,
   onEdit,
@@ -78,8 +80,8 @@ export function LeadsTable({
 
   const columns = useMemo(
     () =>
-      getLeadsTableColumns({ onOpenDetails, onUpdateStatus, onEdit, onAssign, onConvert, onDelete }),
-    [onOpenDetails, onEdit, onAssign, onConvert, onDelete, onUpdateStatus],
+      getLeadsTableColumns({ onOpenDetails, onUpdateStatus, onUpdateContactStatus, onEdit, onAssign, onConvert, onDelete }),
+    [onOpenDetails, onEdit, onAssign, onConvert, onDelete, onUpdateStatus, onUpdateContactStatus],
   );
 
   const table = useReactTable({
