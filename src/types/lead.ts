@@ -46,6 +46,12 @@ export enum AttachmentType {
   OTHER = "OTHER",
 }
 
+export enum LeadContactStatus {
+  NO_RESPONSE = "NO_RESPONSE",
+  BUSY = "BUSY",
+  NEXT_CONTACT = "NEXT_CONTACT",
+}
+
 export interface IUserSummary {
   _id: string;
   firstName: string;
@@ -96,6 +102,9 @@ export interface ILead {
 
   source: LeadSource;
   status: LeadStatus;
+  contactStatus?: LeadContactStatus | null;
+  nextContactAt?: string | null;
+  location?: string;
   priority: LeadPriority;
 
   pipelineStage?: string;
@@ -140,8 +149,6 @@ export interface ILead {
   createdAt: string;
   updatedAt: string;
 }
-
-
 
 export interface CreateLeadPayload {
   firstName: string;
@@ -200,6 +207,11 @@ export interface UpdateLeadStatusPayload {
   status: LeadStatus;
 }
 
+export interface UpdateLeadContactStatusPayload {
+  contactStatus: LeadContactStatus;
+  nextContactAt?: string;
+}
+
 export interface AssignLeadPayload {
   assignedTo: string;
 }
@@ -211,8 +223,6 @@ export interface ConvertLeadPayload {
 export interface AddLeadNotePayload {
   message: string;
 }
-
-
 
 export interface AddLeadAttachmentPayload {
   title: string;

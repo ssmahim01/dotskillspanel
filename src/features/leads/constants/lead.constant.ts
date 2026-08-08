@@ -1,5 +1,6 @@
 import {
   AttachmentType,
+  LeadContactStatus,
   LeadPriority,
   LeadSource,
   LeadStatus,
@@ -117,6 +118,21 @@ export const LEAD_STATUS_CONFIG: Record<
       "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
   },
 };
+
+export const LEAD_CONTACT_STATUS_OPTIONS = [
+  {
+    value: LeadContactStatus.NO_RESPONSE,
+    label: "No Response",
+  },
+  {
+    value: LeadContactStatus.BUSY,
+    label: "Busy",
+  },
+  {
+    value: LeadContactStatus.NEXT_CONTACT,
+    label: "Next Contact",
+  },
+] as const;
 
 export const LEAD_PRIORITY_CONFIG: Record<
   LeadPriority,

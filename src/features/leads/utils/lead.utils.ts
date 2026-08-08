@@ -1,4 +1,4 @@
-import { AttachmentType, LeadPriority, LeadSource, LeadStatus } from "@/types/lead";
+import { AttachmentType, ILead, LeadContactStatus, LeadPriority, LeadSource, LeadStatus } from "@/types/lead";
 
 export const getLeadStatusColor = (status: LeadStatus) => {
   switch (status) {
@@ -21,6 +21,42 @@ export const getLeadStatusColor = (status: LeadStatus) => {
     default:
       return "secondary";
   }
+};
+
+export const hasNextContact = (lead: ILead) => {
+  return (
+    lead.contactStatus === LeadContactStatus.NEXT_CONTACT &&
+    Boolean(lead.nextContactAt)
+  );
+};
+
+export const getLeadContactStatusLabel = (
+  status?: LeadContactStatus | null,
+) => {
+  switch (status) {
+    case LeadContactStatus.NO_RESPONSE:
+      return "No Response";
+
+    case LeadContactStatus.BUSY:
+      return "Busy";
+
+    case LeadContactStatus.NEXT_CONTACT:
+      return "Next Contact";
+
+    default:
+      return "Not Contacted";
+  }
+};
+
+export const formatNextContact = (
+  nextContactAt?: string | null,
+) => {
+  if (!nextContactAt) return null;
+
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(nextContactAt));
 };
 
 export function formatRelativeTime(dateString?: string): string {

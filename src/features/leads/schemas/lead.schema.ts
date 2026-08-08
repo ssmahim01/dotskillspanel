@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   AttachmentType,
+  LeadContactStatus,
   LeadPriority,
   LeadSource,
   LeadStatus,
@@ -98,6 +99,40 @@ export const createLeadFormSchema = z.object({
   services: z.array(z.string().trim()).optional(),
 });
 
+export const updateLeadContactStatusSchema = z
+  .object({
+    contactStatus: z.nativeEnum(LeadContactStatus),
+
+    nextContactAt: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      data.contactStatus === LeadContactStatus.NEXT_CONTACT &&
+      !data.nextContactAt
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["nextContactAt"],
+        message: "Next contact date and time is required.",
+      });
+    }
+
+    if (
+      data.contactStatus !== LeadContactStatus.NEXT_CONTACT &&
+      data.nextContactAt
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["nextContactAt"],
+        message:
+          "Next contact date is only allowed for Next Contact status.",
+      });
+    }
+  });
+  
+export type UpdateLeadContactStatusValues = z.infer<
+  typeof updateLeadContactStatusSchema
+>;
 export type CreateLeadFormValues = z.infer<typeof createLeadFormSchema>;
 
 export const updateLeadFormSchema = createLeadFormSchema.partial();

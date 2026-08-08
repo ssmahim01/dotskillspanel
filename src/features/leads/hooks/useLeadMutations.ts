@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { leadApi } from "../api/lead.api";
 import { leadKeys } from "../api/lead.keys";
+import { UpdateLeadContactStatusPayload } from "@/types/lead";
 
 export const useLeadMutations = () => {
   const queryClient = useQueryClient();
@@ -63,6 +64,26 @@ export const useLeadMutations = () => {
       });
     },
   });
+
+  const updateContactStatus = useMutation({
+  mutationFn: ({
+    id,
+    payload,
+  }: {
+    id: string;
+    payload: UpdateLeadContactStatusPayload;
+  }) => leadApi.updateContactStatus(id, payload),
+
+  onSuccess: (_, variables) => {
+    queryClient.invalidateQueries({
+      queryKey: leadKeys.lists(),
+    });
+
+    queryClient.invalidateQueries({
+      queryKey: leadKeys.detail(variables.id),
+    });
+  },
+});
 
   const assignLead = useMutation({
     mutationFn: ({
@@ -151,6 +172,7 @@ export const useLeadMutations = () => {
     createLead,
     updateLead,
     updateLeadStatus,
+    updateContactStatus,
     importLeads,
     assignLead,
     convertLead,

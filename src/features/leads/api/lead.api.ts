@@ -11,6 +11,7 @@ import type {
   GetLeadResponse,
   ILead,
   LeadFilters,
+  UpdateLeadContactStatusPayload,
   UpdateLeadPayload,
   UpdateLeadStatusPayload,
 } from "@/types/lead";
@@ -115,6 +116,14 @@ export const leadApi = {
       `${BASE_URL}/${id}/status`,
       payload,
     ),
+    updateContactStatus: (
+  id: string,
+  payload: UpdateLeadContactStatusPayload,
+) =>
+  apiClient.patch<ApiResponse<ILead>>(
+    `${BASE_URL}/${id}/contact-status`,
+    payload,
+  ),
 
   assignLead: (
     id: string,
