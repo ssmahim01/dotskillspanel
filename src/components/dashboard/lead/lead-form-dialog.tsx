@@ -115,7 +115,12 @@ const leadToFormValues = (lead: ILead): LeadFormDialogValues => ({
   attachments: lead?.attachments?.map((attachment) => attachment.url) ?? [],
 });
 
-export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialogProps) {
+export function LeadFormDialog({
+  mode,
+  lead,
+  open,
+  onOpenChange,
+}: LeadFormDialogProps) {
   const { createLead, updateLead } = useLeadMutations();
   const { data: usersResponse } = useAssignableUsers();
   const users = usersResponse?.data ?? [];
@@ -125,12 +130,15 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
 
   const form = useForm<CreateLeadFormValues>({
     resolver: zodResolver(createLeadFormSchema as any),
-    defaultValues: mode === "edit" && lead ? leadToFormValues(lead) : EMPTY_VALUES,
+    defaultValues:
+      mode === "edit" && lead ? leadToFormValues(lead) : EMPTY_VALUES,
   });
 
   useEffect(() => {
     if (open) {
-      form.reset(mode === "edit" && lead ? leadToFormValues(lead) : EMPTY_VALUES);
+      form.reset(
+        mode === "edit" && lead ? leadToFormValues(lead) : EMPTY_VALUES,
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, lead, mode]);
@@ -203,157 +211,221 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogHeader>
-          
-          <DialogTitle>{mode === "create" ? "Add New Lead" : "Edit Lead"}</DialogTitle>
-          <DialogDescription>
-            {mode === "create"
-              ? "Capture a new lead and route it to the right owner."
-              : "Update this lead's information."}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogContent className="bg-gray-100 dark:bg-slate-950 not-last-of-type:max-h-[90vh] max-w-2xl overflow-y-auto">
-     <ScrollArea className="max-h-[80vh] pr-2"> 
-
-        <form onSubmit={onSubmit} className="flex flex-col gap-6">
-          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field label="First Name" error={form.formState.errors.firstName?.message}>
-              <Input {...form.register("firstName")} placeholder="Brooklyn" />
-            </Field>
-            <Field label="Last Name" error={form.formState.errors.lastName?.message}>
-              <Input {...form.register("lastName")} placeholder="Simmons" />
-            </Field>
-            <Field label="Email" error={form.formState.errors.email?.message}>
-              <Input {...form.register("email")} placeholder="name@example.com" />
-            </Field>
-            <Field label="Phone" error={form.formState.errors.phone?.message}>
-              <Input {...form.register("phone")} placeholder="+1 (555) 123-4567" />
-            </Field>
-            <Field label="Company">
-              <Input {...form.register("company")} placeholder="Tech Solutions Inc." />
-            </Field>
-            <Field label="Job Title">
-              <Input {...form.register("jobTitle")} placeholder="Marketing Manager" />
-            </Field>
-            <Field label="Industry">
-              <Input {...form.register("industry")} placeholder="Software" />
-            </Field>
-            <Field label="Website">
-              <Input {...form.register("website")} placeholder="https://example.com" />
-            </Field>
-          </section>
-
-          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field label="Source" error={form.formState.errors.source?.message}>
-              <Select
-                value={form.watch("source")}
-                onValueChange={(value) =>
-                  form.setValue("source", value as CreateLeadFormValues["source"])
-                }
+      <DialogHeader>
+        <DialogTitle>
+          {mode === "create" ? "Add New Lead" : "Edit Lead"}
+        </DialogTitle>
+        <DialogDescription>
+          {mode === "create"
+            ? "Capture a new lead and route it to the right owner."
+            : "Update this lead's information."}
+        </DialogDescription>
+      </DialogHeader>
+      <DialogContent className="bg-gray-100 dark:bg-slate-950 not-last-of-type:max-h-[90vh] max-w-2xl overflow-y-auto">
+        <ScrollArea className="max-h-[80vh] pr-2">
+          <form onSubmit={onSubmit} className="flex flex-col gap-6">
+            <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field
+                label="First Name"
+                error={form.formState.errors.firstName?.message}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select source" />
-                </SelectTrigger>
-                <SelectContent>
-                  {LEAD_SOURCE_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
-
-            <Field label="Priority">
-              <Select
-                value={form.watch("priority")}
-                onValueChange={(value) =>
-                  form.setValue("priority", value as CreateLeadFormValues["priority"])
-                }
+                <Input {...form.register("firstName")} placeholder="Brooklyn" />
+              </Field>
+              <Field
+                label="Last Name"
+                error={form.formState.errors.lastName?.message}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select priority" />
-                </SelectTrigger>
-                <SelectContent>
-                  {LEAD_PRIORITY_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+                <Input {...form.register("lastName")} placeholder="Simmons" />
+              </Field>
+              <Field label="Email" error={form.formState.errors.email?.message}>
+                <Input
+                  {...form.register("email")}
+                  placeholder="name@example.com"
+                />
+              </Field>
+              <Field label="Phone" error={form.formState.errors.phone?.message}>
+                <Input
+                  {...form.register("phone")}
+                  placeholder="+1 (555) 123-4567"
+                />
+              </Field>
+              <Field label="Company">
+                <Input
+                  {...form.register("company")}
+                  placeholder="Tech Solutions Inc."
+                />
+              </Field>
+              <Field label="Job Title">
+                <Input
+                  {...form.register("jobTitle")}
+                  placeholder="Marketing Manager"
+                />
+              </Field>
+              <Field label="Industry">
+                <Input {...form.register("industry")} placeholder="Software" />
+              </Field>
+              <Field label="Website">
+                <Input
+                  {...form.register("website")}
+                  placeholder="https://example.com"
+                />
+              </Field>
+            </section>
 
-            <Field label="Preferred Contact Method">
-              <Select
-                value={form.watch("preferredContactMethod")}
-                onValueChange={(value) =>
-                  form.setValue(
-                    "preferredContactMethod",
-                    value as CreateLeadFormValues["preferredContactMethod"],
-                  )
-                }
+            <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Field label="Address">
+                <Input
+                  {...form.register("address")}
+                  placeholder="123 Main Street"
+                />
+              </Field>
+              <Field label="City">
+                <Input {...form.register("city")} placeholder="Austin" />
+              </Field>
+              <Field label="State / Region">
+                <Input {...form.register("state")} placeholder="Texas" />
+              </Field>
+              <Field label="Country">
+                <Input
+                  {...form.register("country")}
+                  placeholder="United States"
+                />
+              </Field>
+              <Field label="ZIP / Postal Code">
+                <Input {...form.register("zipCode")} placeholder="78701" />
+              </Field>
+              <Field label="Location (Auto imported)">
+                <Input
+                  value={[
+                    form.watch("city"),
+                    form.watch("state"),
+                    form.watch("country"),
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
+                  placeholder="City, State, Country"
+                  readOnly
+                />
+              </Field>
+              <Field
+                label="Source"
+                error={form.formState.errors.source?.message}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select method" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CONTACT_METHOD_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+                <Select
+                  value={form.watch("source")}
+                  onValueChange={(value) =>
+                    form.setValue(
+                      "source",
+                      value as CreateLeadFormValues["source"],
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select source" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LEAD_SOURCE_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-            <Field label="Assign To">
-              <Select
-                value={form.watch("assignedTo")}
-                onValueChange={(value) => form.setValue("assignedTo", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Unassigned" />
-                </SelectTrigger>
-                <SelectContent>
-                  {users.map((user) => (
-                    <SelectItem key={user._id} value={user._id}>
-                      {getLeadFullName(user)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
+              <Field label="Priority">
+                <Select
+                  value={form.watch("priority")}
+                  onValueChange={(value) =>
+                    form.setValue(
+                      "priority",
+                      value as CreateLeadFormValues["priority"],
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LEAD_PRIORITY_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-            <Field label="Estimated Value ($)">
-              <Input
-                type="number"
-                min={0}
-                {...form.register("estimatedValue")}
-              />
-            </Field>
+              <Field label="Preferred Contact Method">
+                <Select
+                  value={form.watch("preferredContactMethod")}
+                  onValueChange={(value) =>
+                    form.setValue(
+                      "preferredContactMethod",
+                      value as CreateLeadFormValues["preferredContactMethod"],
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CONTACT_METHOD_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-            <Field label="Expected Close Date">
-              <Input type="date" {...form.register("expectedCloseDate")} />
-            </Field>
-          </section>
+              <Field label="Assign To">
+                <Select
+                  value={form.watch("assignedTo")}
+                  onValueChange={(value) => form.setValue("assignedTo", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Unassigned" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {users.map((user) => (
+                      <SelectItem key={user._id} value={user._id}>
+                        {getLeadFullName(user)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
 
-          <section className="grid grid-cols-1 gap-4">
-            <Field label="Requirement Title">
-              <Input
-                {...form.register("requirementTitle")}
-                placeholder="Enterprise CRM rollout"
-              />
-            </Field>
-            <Field label="Requirement Description">
-              <Textarea
-                rows={3}
-                {...form.register("requirementDescription")}
-                placeholder="Interested in our enterprise plan..."
-              />
-            </Field>
+              <Field label="Estimated Value ($)">
+                <Input
+                  type="number"
+                  min={0}
+                  {...form.register("estimatedValue")}
+                />
+              </Field>
 
-            {/* <Field label="Attachments">
+              <Field label="Expected Close Date">
+                <Input type="date" {...form.register("expectedCloseDate")} />
+              </Field>
+            </section>
+
+            <section className="grid grid-cols-1 gap-4">
+              <Field label="Requirement Title">
+                <Input
+                  {...form.register("requirementTitle")}
+                  placeholder="Enterprise CRM rollout"
+                />
+              </Field>
+              <Field label="Requirement Description">
+                <Textarea
+                  rows={3}
+                  {...form.register("requirementDescription")}
+                  placeholder="Interested in our enterprise plan..."
+                />
+              </Field>
+
+              {/* <Field label="Attachments">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -406,24 +478,30 @@ export function LeadFormDialog({ mode, lead, open, onOpenChange }: LeadFormDialo
                 </ul>
               )}
             </Field> */}
-          </section>
+            </section>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting || isUploading} variant="default" className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600">
-              {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-              {mode === "create" ? "Create Lead" : "Save Changes"}
-            </Button>
-          </DialogFooter>
-        </form>
-        <ScrollBar orientation="vertical" /></ScrollArea>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSubmitting || isUploading}
+                variant="default"
+                className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600"
+              >
+                {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+                {mode === "create" ? "Create Lead" : "Save Changes"}
+              </Button>
+            </DialogFooter>
+          </form>
+          <ScrollBar orientation="vertical" />
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

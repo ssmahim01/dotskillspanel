@@ -20,6 +20,7 @@ import { LeadAssignDialog } from "./lead-assign-dialog";
 import { LeadConvertDialog } from "./lead-convert-dialog";
 import { LeadDetailsDrawer } from "./lead-details-drawer";
 import { LeadImportDialog } from "./lead-import-dialog";
+import { LeadContactStatusDialog } from "./lead-contact-status-dialog";
 import type { ILead, LeadStatus } from "@/types/lead";
 
 export function LeadsPageClient() {
@@ -37,6 +38,8 @@ export function LeadsPageClient() {
 
   const { data, isLoading, isError, error, refetch } = useLeads(queryFilters);
   const { assignLead, trashLead, updateLeadStatus } = useLeadMutations();
+  const [contactStatusLead, setContactStatusLead] = useState<ILead | null>(null);
+  const [contactStatusOpen, setContactStatusOpen] = useState(false);
 
   const handleUpdateStatus = useCallback(
     (lead: ILead, status?: LeadStatus) => {
@@ -106,6 +109,11 @@ export function LeadsPageClient() {
     setFormMode("create");
     setEditLead(null);
     setFormOpen(true);
+  }, []);
+
+  const handleUpdateContactStatus = useCallback((lead: ILead) => {
+    setContactStatusLead(lead);
+    setContactStatusOpen(true);
   }, []);
 
   const handleAssign = useCallback((lead: ILead) => {
@@ -197,6 +205,7 @@ export function LeadsPageClient() {
         <LeadsTable
           leads={leads}
           onUpdateStatus={handleUpdateStatus}
+          onUpdateContactStatus={handleUpdateContactStatus}
           isLoading={isLoading}
           isError={isError}
           errorMessage={error?.message}
@@ -256,6 +265,12 @@ export function LeadsPageClient() {
       />
 
       <LeadImportDialog open={importOpen} onOpenChange={setImportOpen} />
+
+      <LeadContactStatusDialog
+        lead={contactStatusLead}
+        open={contactStatusOpen}
+        onOpenChange={setContactStatusOpen}
+      />
 
       <ConfirmDialog
         open={deleteOpen}

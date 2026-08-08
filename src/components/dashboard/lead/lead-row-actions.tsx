@@ -7,6 +7,7 @@ import {
   MoreHorizontal,
   Pencil,
   RefreshCw,
+  CalendarClock,
   Trash2,
   UserPlus,
 } from "lucide-react";
@@ -35,6 +36,7 @@ interface LeadRowActionsProps {
   onConvert: (lead: ILead) => void;
   onDelete: (lead: ILead) => void;
   onUpdateStatus: (lead: ILead, status: LeadStatus) => void;
+  onUpdateContactStatus: (lead: ILead) => void;
 }
 
 export function LeadRowActions({
@@ -43,6 +45,7 @@ export function LeadRowActions({
   onEdit,
   onAssign,
   onUpdateStatus,
+  onUpdateContactStatus,
   onConvert,
   onDelete,
 }: LeadRowActionsProps) {
@@ -80,29 +83,31 @@ export function LeadRowActions({
             Convert to Client
           </DropdownMenuItem>
         )}
-      <DropdownMenuSub>
-  <DropdownMenuSubTrigger>
-    <RefreshCw className="mr-2 h-4 w-4" />
-    Update Status
-  </DropdownMenuSubTrigger>
+        <DropdownMenuItem onClick={() => onUpdateContactStatus(lead)}>
+          <CalendarClock className="h-4 w-4" />
+          Contact Status
+        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Update Status
+          </DropdownMenuSubTrigger>
 
-  <DropdownMenuSubContent>
-    {LEAD_STATUS_OPTIONS.map((item) => (
-      <DropdownMenuItem
-        key={item.value}
-        disabled={lead.status === item.value}
-        onClick={() =>
-          onUpdateStatus(lead, item.value)
-        }
-      >
-        {lead.status === item.value && (
-          <Check className="mr-2 h-4 w-4" />
-        )}
-        {item.label}
-      </DropdownMenuItem>
-    ))}
-  </DropdownMenuSubContent>
-</DropdownMenuSub>
+          <DropdownMenuSubContent>
+            {LEAD_STATUS_OPTIONS.map((item) => (
+              <DropdownMenuItem
+                key={item.value}
+                disabled={lead.status === item.value}
+                onClick={() => onUpdateStatus(lead, item.value)}
+              >
+                {lead.status === item.value && (
+                  <Check className="mr-2 h-4 w-4" />
+                )}
+                {item.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={() => onDelete(lead)}>
           <Trash2 className="h-4 w-4" />

@@ -174,9 +174,9 @@ export const LEAD_PRIORITY_CONFIG: Record<
 export const LEAD_SOURCE_CONFIG: Record<
   LeadSource,
   SourceConfig
-> = {
+  > = {
+    FACEBOOK: { label: "Facebook", value: LeadSource.FACEBOOK },
   WEBSITE: { label: "Website", value: LeadSource.WEBSITE },
-  FACEBOOK: { label: "Facebook", value: LeadSource.FACEBOOK },
   GOOGLE: { label: "Google", value: LeadSource.GOOGLE },
   LINKEDIN: { label: "LinkedIn", value: LeadSource.LINKEDIN },
   WHATSAPP: { label: "WhatsApp", value: LeadSource.WHATSAPP },

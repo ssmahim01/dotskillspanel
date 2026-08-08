@@ -31,7 +31,8 @@ const SOURCE_ICONS: Record<LeadSource, React.ReactNode> = {
 interface LeadsTableColumnsOptions {
   onOpenDetails: (lead: ILead) => void;
   onEdit: (lead: ILead) => void;
-   onUpdateStatus: (lead: ILead) => void;
+   onUpdateStatus: (lead: ILead, status: import("@/types/lead").LeadStatus) => void;
+  onUpdateContactStatus: (lead: ILead) => void;
   onAssign: (lead: ILead) => void;
   onConvert: (lead: ILead) => void;
   onDelete: (lead: ILead) => void;
@@ -41,6 +42,7 @@ export function getLeadsTableColumns({
   onOpenDetails,
   onEdit,
   onUpdateStatus,
+  onUpdateContactStatus,
   onAssign,
   onConvert,
   onDelete,
@@ -92,7 +94,7 @@ export function getLeadsTableColumns({
             <div className="flex flex-col">
               <span className="font-medium">{getLeadFullName(lead)}</span>
               <span className="text-xs text-muted-foreground">
-                {lead.email || lead.phone}
+                {/* {lead.email || lead.phone} */}
               </span>
               <span className="text-xs text-muted-foreground">
                 {lead.phone}
@@ -114,6 +116,25 @@ export function getLeadsTableColumns({
           </Badge>
         );
       },
+    },
+    {
+      accessorKey: "contactStatus",
+      header: "Contact Status",
+      cell: ({ row }) => (
+        <Badge variant="outline">
+          {row.original.contactStatus === "NO_RESPONSE" ? "No Response" : row.original.contactStatus === "BUSY" ? "Busy" : row.original.contactStatus === "NEXT_CONTACT" ? "Next Contact" : "—"}
+        </Badge>
+      ),
+    },
+    {
+      accessorKey: "nextContactAt",
+      header: "Next Contact",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.original.nextContactAt ? formatDate(row.original.nextContactAt) : "—"}</span>,
+    },
+    {
+      accessorKey: "location",
+      header: "Location",
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.original.location || [row.original.city, row.original.state].filter(Boolean).join(", ") || "—"}</span>,
     },
     {
       accessorKey: "priority",
@@ -161,11 +182,11 @@ export function getLeadsTableColumns({
       },
     },
     {
-      accessorKey: "createdAt",
-      header: "Created",
+      accessorKey: "updatedAt",
+      header: "Updated At",
       cell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
-          {formatDate(row.original.createdAt)}
+          {formatDate(row.original.updatedAt)}
         </span>
       ),
     },
@@ -180,7 +201,8 @@ export function getLeadsTableColumns({
           onOpenDetails={onOpenDetails}
           onEdit={onEdit}
           onAssign={onAssign}
-           onUpdateStatus={onUpdateStatus}
+          onUpdateStatus={onUpdateStatus}
+          onUpdateContactStatus={onUpdateContactStatus}
           onConvert={onConvert}
           onDelete={onDelete}
         />

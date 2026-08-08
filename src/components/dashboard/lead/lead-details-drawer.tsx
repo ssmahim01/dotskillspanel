@@ -8,7 +8,6 @@ import {
   Mail,
   MessageSquare,
   Paperclip,
-  Pencil,
   Phone,
   Sparkles,
   User,
@@ -36,6 +35,7 @@ import {
   LEAD_PRIORITY_CONFIG,
   LEAD_SOURCE_CONFIG,
   LEAD_STATUS_CONFIG,
+  LEAD_CONTACT_STATUS_OPTIONS,
 } from "@/features/leads/constants/lead.constant";
 import { useLead } from "@/features/leads/hooks";
 import {
@@ -66,7 +66,6 @@ export function LeadDetailsDrawer({
   leadId,
   open,
   onOpenChange,
-  onEdit,
   onAssign,
   onConvert,
 }: LeadDetailsDrawerProps) {
@@ -194,6 +193,7 @@ export function LeadDetailsDrawer({
                     }
                   />
                   <InfoRow label="Company" value={lead.company || "-"} />
+                  <InfoRow label="Location" value={lead.location || [lead.city, lead.state, lead.country].filter(Boolean).join(", ") || "-"} />
                   <InfoRow label="Source" value={LEAD_SOURCE_CONFIG[lead.source].label} />
                   <InfoRow
                     label="Status"
@@ -203,6 +203,11 @@ export function LeadDetailsDrawer({
                       </Badge>
                     }
                   />
+                  <InfoRow
+                    label="Contact Status"
+                    value={LEAD_CONTACT_STATUS_OPTIONS.find((option) => option.value === lead.contactStatus)?.label || "—"}
+                  />
+                  <InfoRow label="Next Contact" value={lead.nextContactAt ? formatDateTime(lead.nextContactAt) : "—"} />
                   <InfoRow
                     label="Priority"
                     value={
