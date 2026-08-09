@@ -10,6 +10,44 @@ export const USER_SEARCHABLE_FIELDS = [
   "address",
 ] as const;
 
+export const USER_GENDER_OPTIONS = [
+  {
+    value: "MALE",
+    label: "Male",
+  },
+  {
+    value: "FEMALE",
+    label: "Female",
+  },
+  {
+    value: "OTHER",
+    label: "Other",
+  },
+  {
+    value: "PREFER_NOT_TO_SAY",
+    label: "Prefer not to say",
+  },
+] as const;
+
+export const USER_PAYMENT_METHOD_OPTIONS = [
+  {
+    value: "CASH",
+    label: "Cash",
+  },
+  {
+    value: "BKASH",
+    label: "bKash",
+  },
+  {
+    value: "NAGAD",
+    label: "Nagad",
+  },
+  {
+    value: "BANK",
+    label: "Bank Transfer",
+  },
+] as const;
+
 export const USER_FILTERABLE_FIELDS = [
   "role",
   "status",
