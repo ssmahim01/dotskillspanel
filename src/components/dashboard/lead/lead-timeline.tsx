@@ -6,7 +6,10 @@ import {
   UserPlus,
 } from "lucide-react";
 
-import { formatDateTime, getLeadFullName } from "@/features/leads/utils/lead.utils";
+import {
+  formatDateTime,
+  getLeadFullName,
+} from "@/features/leads/utils/lead.utils";
 import type { ILead } from "@/types/lead";
 
 interface TimelineEvent {
@@ -27,7 +30,9 @@ export function LeadTimeline({ lead }: LeadTimelineProps) {
       id: "created",
       icon: <FileText className="h-4 w-4" />,
       title: "Lead created",
-      description: lead.createdBy ? `by ${getLeadFullName(lead.createdBy)}` : undefined,
+      description: lead.createdBy
+        ? `by ${getLeadFullName(lead.createdBy)}`
+        : undefined,
       date: lead.createdAt,
     },
     ...(lead.assignedTo
@@ -45,14 +50,18 @@ export function LeadTimeline({ lead }: LeadTimelineProps) {
       id: note._id ?? note.createdAt ?? note.message,
       icon: <MessageSquare className="h-4 w-4" />,
       title: "Note added",
-      description: note.message,
+      description: note.createdBy
+        ? `by ${getLeadFullName(note.createdBy)}`
+        : note.message,
       date: note.createdAt,
     })),
     ...lead.attachments.map((attachment) => ({
       id: attachment._id ?? attachment.url,
       icon: <Paperclip className="h-4 w-4" />,
       title: "Attachment added",
-      description: attachment.title,
+      description: attachment.uploadedBy
+        ? `by ${getLeadFullName(attachment.uploadedBy)}`
+        : attachment.title,
       date: attachment.uploadedAt,
     })),
     ...(lead.isConverted

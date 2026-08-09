@@ -139,6 +139,10 @@ export const LEAD_CONTACT_STATUS_OPTIONS = [
     value: LeadContactStatus.NEXT_CONTACT,
     label: "Next Contact",
   },
+  {
+    value: LeadContactStatus.PHONE_OFF,
+    label: "Phone Off",
+  },
 ] as const;
 
 export const LEAD_PRIORITY_CONFIG: Record<
