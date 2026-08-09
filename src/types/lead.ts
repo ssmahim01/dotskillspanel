@@ -7,6 +7,7 @@ export enum LeadStatus {
   PROPOSAL_SENT = "PROPOSAL_SENT",
   NEGOTIATION = "NEGOTIATION",
   ON_HOLD = "ON_HOLD",
+  CONFIRMED_MEETING = "CONFIRMED_MEETING",
   WON = "WON",
   LOST = "LOST",
 }
@@ -241,6 +242,7 @@ export interface LeadFilters {
   source?: LeadSource;
   status?: LeadStatus;
   priority?: LeadPriority;
+  contactStatus?: LeadContactStatus;
 
   assignedTo?: string;
 

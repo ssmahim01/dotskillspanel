@@ -155,7 +155,7 @@ export function LeadDetailsDrawer({
                     <Button
                       size="sm"
                       onClick={() => onConvert(lead)}
-                      className="bg-emerald-600 hover:bg-emerald-700"
+                      className="gap-2 duration-500 hover:cursor-pointer hover:scale-105 transition-transform transform ease-in-out hover:bg-cyan-800 text-white bg-indigo-600"
                     >
                       <ArrowRightLeft className="h-4 w-4" />
                       Convert to Client

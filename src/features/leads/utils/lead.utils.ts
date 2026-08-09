@@ -10,6 +10,8 @@ export const getLeadStatusColor = (status: LeadStatus) => {
       return "info";
     case LeadStatus.PROPOSAL_SENT:
       return "warning";
+    case LeadStatus.CONFIRMED_MEETING:
+      return "success";
     case LeadStatus.NEGOTIATION:
       return "warning";
     case LeadStatus.ON_HOLD:

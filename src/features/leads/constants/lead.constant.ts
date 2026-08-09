@@ -101,6 +101,13 @@ export const LEAD_STATUS_CONFIG: Record<
     className:
       "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200",
   },
+  CONFIRMED_MEETING: {
+  label: "Confirmed Meeting",
+  value: LeadStatus.CONFIRMED_MEETING,
+  variant: "success",
+  className:
+    "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
+},
 
   WON: {
     label: "Won",

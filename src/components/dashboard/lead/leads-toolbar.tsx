@@ -5,7 +5,6 @@ import {
   Download,
   Plus,
   Search,
-  SlidersHorizontal,
   Trash2,
   Upload,
 } from "lucide-react";
@@ -19,8 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import {
+  LEAD_CONTACT_STATUS_OPTIONS,
   LEAD_PRIORITY_OPTIONS,
   LEAD_SOURCE_OPTIONS,
   LEAD_STATUS_OPTIONS,
@@ -43,7 +42,7 @@ const ALL = "__all__";
 
 export function LeadsToolbar({
   filters,
-  activeFilterCount,
+  // activeFilterCount,
   onSearchChange,
   onUpdateFilters,
   onExport,
@@ -84,6 +83,32 @@ export function LeadsToolbar({
           <SelectContent>
             <SelectItem value={ALL}>All Statuses</SelectItem>
             {LEAD_STATUS_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select
+          value={filters.contactStatus ?? ALL}
+          onValueChange={(value) =>
+            onUpdateFilters({
+              contactStatus:
+                value === ALL
+                  ? undefined
+                  : (value as LeadFilters["contactStatus"]),
+            })
+          }
+        >
+          <SelectTrigger className="w-full sm:w-40">
+            <SelectValue placeholder="Contact Status" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value={ALL}>All Contact Statuses</SelectItem>
+
+            {LEAD_CONTACT_STATUS_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
@@ -135,7 +160,7 @@ export function LeadsToolbar({
           </SelectContent>
         </Select>
 
-        <Button
+        {/* <Button
           variant="outline"
           className="w-full sm:w-auto"
           onClick={() => setMoreFiltersOpen(true)}
@@ -147,7 +172,7 @@ export function LeadsToolbar({
               {activeFilterCount}
             </Badge>
           )}
-        </Button>
+        </Button> */}
       </div>
 
       <div className="flex items-center flex-wrap gap-3">
