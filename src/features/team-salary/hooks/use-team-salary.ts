@@ -11,6 +11,7 @@ import {
   getTeamSalaryById,
   getTeamSalaries,
   getUserSalaryHistory,
+  deleteTeamSalary,
 } from "../api/team-salary.api";
 
 import type {
@@ -119,8 +120,8 @@ export function useGenerateMonthlySalary() {
     mutationFn: (payload: GenerateMonthlySalaryInput) =>
       generateMonthlySalary(payload),
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: teamSalaryKeys.all,
       });
     },
@@ -150,6 +151,20 @@ export function useCreateSalaryPayment() {
 
       queryClient.invalidateQueries({
         queryKey: teamSalaryKeys.all,
+      });
+    },
+  });
+}
+
+export function useMoveTeamSalaryToTrash() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id }: { id: string }) => deleteTeamSalary(id),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: teamSalaryKeys.all });
+      queryClient.invalidateQueries({
+        queryKey: teamSalaryKeys.detail(variables.id),
       });
     },
   });
