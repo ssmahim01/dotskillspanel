@@ -155,6 +155,19 @@ export function useCreateSalaryPayment() {
   });
 }
 
+export function useMoveTeamSalaryToTrash() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, reason }: { id: string; reason: string }) =>
+      cancelTeamSalary(id, { reason }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: teamSalaryKeys.all });
+      queryClient.invalidateQueries({ queryKey: teamSalaryKeys.detail(variables.id) });
+    },
+  });
+}
+
 export function useCancelTeamSalary() {
   const queryClient = useQueryClient();
 
