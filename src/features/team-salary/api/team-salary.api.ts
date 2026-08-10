@@ -1,3 +1,5 @@
+import api from "@/lib/axios";
+
 import type {
   CancelTeamSalaryInput,
   CreateSalaryPaymentInput,
@@ -67,27 +69,18 @@ function buildQueryString(
 
 async function request<T>(
   url: string,
-  options?: RequestInit,
+  options?: {
+    method?: "GET" | "POST" | "PATCH";
+    body?: string;
+  },
 ): Promise<T> {
-  const response = await fetch(url, {
-    ...options,
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(options?.headers ?? {}),
-    },
+  const response = await api.request<T>({
+    url,
+    method: options?.method ?? "GET",
+    data: options?.body ? JSON.parse(options.body) : undefined,
   });
 
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      result?.message ||
-        "Something went wrong. Please try again.",
-    );
-  }
-
-  return result;
+  return response.data;
 }
 
 export async function getTeamSalaries(
