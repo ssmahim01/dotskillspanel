@@ -84,6 +84,12 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           description: "Manage team members",
         },
         {
+          id: "team-salary",
+          label: "Team Salary",
+          href: "/dashboard/team-salary",
+          description: "Manage salary of team members",
+        },
+        {
           id: "clients-management",
           label: "Clients",
           href: "/dashboard/admin/clients",
@@ -149,6 +155,12 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           href: "/dashboard/admin/users",
           description: "Manage team members",
         },
+         {
+          id: "team-salary",
+          label: "Team Salary",
+          href: "/dashboard/team-salary",
+          description: "Manage salary of team members",
+        },
         {
           id: "leads",
           label: "Leads",
@@ -186,6 +198,12 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           id: "leads",
           label: "Leads",
           href: "/dashboard/leads",
+        },
+         {
+          id: "team-salary",
+          label: "Team Salary",
+          href: "/dashboard/team-salary",
+          description: "Manage salary of team members",
         },
         {
           id: "orders-management",
@@ -244,6 +262,12 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           href: "/dashboard/leads",
         },
          {
+          id: "team-salary",
+          label: "Team Salary",
+          href: "/dashboard/team-salary",
+          description: "Manage salary of team members",
+        },
+         {
           id: "clients-management",
           label: "Clients",
           href: "/dashboard/clients",
@@ -274,6 +298,12 @@ export const navigationConfig: Record<UserRole, NavGroup[]> = {
           id: "leads",
           label: "Leads",
           href: "/dashboard/leads",
+        },
+         {
+          id: "team-salary",
+          label: "Team Salary",
+          href: "/dashboard/team-salary",
+          description: "Manage salary of team members",
         },
          {
           id: "clients-management",

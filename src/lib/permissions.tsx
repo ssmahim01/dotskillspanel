@@ -32,6 +32,7 @@ export type PageAccess =
   | "automation"
   | "billing"
   | "security"
+  | "team-salary"
   | "clients-management"
   | "product-management"
   | "purchase-products"
@@ -70,6 +71,12 @@ export const availablePages: Page[] = [
     label: "Team Management",
     icon: <Users className="h-4 w-4" />,
     description: "Manage team members",
+  },
+  {
+    id: "team-salary",
+    label: "Team Salary",
+    icon: <Users className="h-4 w-4" />,
+    description: "Manage team salary of members",
   },
   {
     id: "analytics",
